@@ -1,0 +1,7 @@
+aws:
+  secretsmanager:
+    name: tomaDo
+cloud:
+  aws:
+    region:
+      static: ap-northeast-2

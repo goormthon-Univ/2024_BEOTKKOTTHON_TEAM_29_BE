@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: tomado
+
+  datasource:
+    url: ${MYSQL_URL}
+    username: ${MYSQL_USERNAME}
+    password: ${MYSQL_PW}
