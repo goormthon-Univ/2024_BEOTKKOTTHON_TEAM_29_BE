@@ -3,6 +3,7 @@ package com.goormthon.tomado.domain.user.service;
 import com.goormthon.tomado.common.ApiResponse;
 import com.goormthon.tomado.common.exception.NotFoundException;
 import com.goormthon.tomado.domain.user.dto.UserChangeDto;
+import com.goormthon.tomado.domain.user.dto.UserInfoDto;
 import com.goormthon.tomado.domain.user.dto.UserLoginDto;
 import com.goormthon.tomado.domain.user.dto.UserSignUpDto;
 import com.goormthon.tomado.domain.user.entity.User;
@@ -47,6 +48,12 @@ public class UserService {
 
         return ApiResponse.success(USER_INFO_CHANGE_SUCCESS, UserChangeDto.from(userChanged));
 
+    }
+
+    public ApiResponse<UserInfoDto> findById(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundException(USER_NOT_EXIST));
+        return ApiResponse.success(USER_INFO_FIND_SUCCESS, UserInfoDto.from(user));
     }
 
 }
