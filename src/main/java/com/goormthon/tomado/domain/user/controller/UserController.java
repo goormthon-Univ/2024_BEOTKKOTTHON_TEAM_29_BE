@@ -1,6 +1,7 @@
 package com.goormthon.tomado.domain.user.controller;
 
 import com.goormthon.tomado.common.ApiResponse;
+import com.goormthon.tomado.domain.user.dto.UserLoginDto;
 import com.goormthon.tomado.domain.user.dto.UserSignUpDto;
 import com.goormthon.tomado.domain.user.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -18,4 +19,10 @@ public class UserController {
     public ApiResponse<UserSignUpDto.Response> signUp(@RequestBody UserSignUpDto.Request request) {
         return userService.signUp(request);
     }
+
+    @PostMapping("users/login")
+    public ApiResponse<UserLoginDto.Response> login(@RequestBody UserLoginDto.Request request) {
+        return userService.login(request);
+    }
+
 }

@@ -10,6 +10,7 @@ import static org.springframework.http.HttpStatus.*;
 @Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public enum SuccessMessage {
+    USER_LOGIN_SUCCESS(OK, "로그인 성공"),
     USER_SIGNUP_SUCCESS(CREATED, "회원 가입 성공")
     ;
 
