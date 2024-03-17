@@ -11,7 +11,8 @@ import static org.springframework.http.HttpStatus.*;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public enum ErrorMessage {
     USER_LOGIN_ID_NOT_EXIST(NOT_FOUND, "존재하지 않는 아이디"),
-    USER_PASSWORD_NOT_EXIST(NOT_FOUND, "존재하지 않는 비밀번호")
+    USER_PASSWORD_NOT_EXIST(NOT_FOUND, "존재하지 않는 비밀번호"),
+    USER_NOT_EXIST(NOT_FOUND, "존재하지 않는 회원")
     ;
 
     private final HttpStatus httpStatus;
