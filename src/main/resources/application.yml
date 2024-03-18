@@ -15,3 +15,32 @@ spring:
         show_sql: true
         format_sql: true
         default_batch_fetch_size: 1000
+
+# swagger 설정
+springdoc:
+  swagger-ui:
+    groups-order: desc
+    default-model-rendering: example
+    operations-sorter: method
+    tags-sorter: alpha
+    disable-swagger-default-url: true
+    display-request-duration: true
+    deep-linking: true
+    default-model-expand-depth: 2
+    default-models-expand-depth: 2
+  api-docs:
+    path: /tomaDo-docs
+  show-actuator: true
+  group-configs:
+    - group: "user"
+      display-name: "User API"
+      paths-to-match:
+        - "/users/**"
+        - "/book/**"
+    - group: "all"
+      display-name: "All API"
+      paths-to-match:
+        - "/**"
+  writer-with-default-pretty-printer: true
+  use-management-port: false
+  packages-to-scan: com.goormthon.tomado.domain.user.controller
