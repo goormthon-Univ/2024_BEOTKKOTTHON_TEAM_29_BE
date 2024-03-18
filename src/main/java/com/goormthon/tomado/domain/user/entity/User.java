@@ -58,6 +58,16 @@ public class User {
         this.nickname = nickname;
     }
 
+    /**
+     * feat : 회원 정보 수정
+     *
+     * 정보가 수정될 때
+     * - 다른 값이 들어올 경우
+     *
+     * 정보가 수정되지 않을 때
+     * - 같은 값이 들어올 경우
+     * - null 값이 들어올 경우
+     */
     public User change(UserChangeDto.Request request) {
         this.loginId = loginId.equals(request.getLogin_id()) || request.getLogin_id() == null ? loginId : request.getLogin_id();
         this.password = password.equals(request.getPassword()) || request.getPassword() == null ? password : request.getPassword();
