@@ -6,8 +6,6 @@ import com.goormthon.tomado.domain.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import java.sql.SQLIntegrityConstraintViolationException;
-
 @RestController
 @RequiredArgsConstructor
 public class UserController {
@@ -15,7 +13,7 @@ public class UserController {
     final private UserService userService;
 
     @PostMapping("users/signup")
-    public ApiResponse<UserSignUpDto.Response> signUp(@RequestBody UserSignUpDto.Request request) throws SQLIntegrityConstraintViolationException {
+    public ApiResponse<UserSignUpDto.Response> signUp(@RequestBody UserSignUpDto.Request request) {
         return userService.signUp(request);
     }
 
@@ -30,7 +28,7 @@ public class UserController {
     }
 
     @PutMapping("users/{user_id}")
-    public ApiResponse<UserChangeDto.Response> change(@PathVariable Long user_id, @RequestBody UserChangeDto.Request request) throws SQLIntegrityConstraintViolationException{
+    public ApiResponse<UserChangeDto.Response> change(@PathVariable Long user_id, @RequestBody UserChangeDto.Request request) {
         return userService.change(user_id, request);
     }
 

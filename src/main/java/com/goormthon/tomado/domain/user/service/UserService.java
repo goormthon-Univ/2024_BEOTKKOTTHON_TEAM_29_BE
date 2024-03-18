@@ -12,8 +12,6 @@ import com.goormthon.tomado.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.sql.SQLIntegrityConstraintViolationException;
-
 import static com.goormthon.tomado.common.response.ErrorMessage.*;
 import static com.goormthon.tomado.common.response.SuccessMessage.*;
 
@@ -23,7 +21,7 @@ public class UserService {
 
     final private UserRepository userRepository;
 
-    public ApiResponse<UserSignUpDto.Response> signUp(UserSignUpDto.Request request) throws SQLIntegrityConstraintViolationException {
+    public ApiResponse<UserSignUpDto.Response> signUp(UserSignUpDto.Request request) {
 
         User user = new User(request.getLogin_id(), request.getPassword(), request.getNickname());
         try {
@@ -51,7 +49,7 @@ public class UserService {
         }
     }
 
-    public ApiResponse<UserChangeDto.Response> change(Long user_id, UserChangeDto.Request request) throws SQLIntegrityConstraintViolationException {
+    public ApiResponse<UserChangeDto.Response> change(Long user_id, UserChangeDto.Request request) {
 
         User user = userRepository.findById(user_id)
                 .orElseThrow(() -> new NotFoundException(USER_NOT_EXIST));
