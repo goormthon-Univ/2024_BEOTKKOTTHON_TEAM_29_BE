@@ -10,6 +10,7 @@ import com.goormthon.tomado.domain.user.dto.UserSignUpDto;
 import com.goormthon.tomado.domain.user.entity.User;
 import com.goormthon.tomado.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import static com.goormthon.tomado.common.response.ErrorMessage.*;
@@ -26,7 +27,7 @@ public class UserService {
         User user = new User(request.getLogin_id(), request.getPassword(), request.getNickname());
         try {
             userRepository.save(user);
-        } catch (RuntimeException exception) {
+        } catch (DataIntegrityViolationException exception) {
             throw new BadRequestException(USER_LOGIN_ID_VALIDATE);
         }
         return ApiResponse.success(USER_SIGNUP_SUCCESS, UserSignUpDto.from(user));
@@ -56,7 +57,7 @@ public class UserService {
         try {
             User userChanged = userRepository.save(user.change(request));
             return ApiResponse.success(USER_INFO_CHANGE_SUCCESS, UserChangeDto.from(userChanged));
-        } catch (RuntimeException exception) {
+        } catch (DataIntegrityViolationException exception) {
             throw new BadRequestException(USER_LOGIN_ID_VALIDATE);
         }
 
