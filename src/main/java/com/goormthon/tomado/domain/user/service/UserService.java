@@ -11,6 +11,7 @@ import com.goormthon.tomado.domain.user.entity.User;
 import com.goormthon.tomado.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import static com.goormthon.tomado.common.response.ErrorMessage.*;
@@ -21,10 +22,11 @@ import static com.goormthon.tomado.common.response.SuccessMessage.*;
 public class UserService {
 
     final private UserRepository userRepository;
+    final private PasswordEncoder passwordEncoder;
 
     public ApiResponse<UserSignUpDto.Response> signUp(UserSignUpDto.Request request) {
 
-        User user = new User(request.getLogin_id(), request.getPassword(), request.getNickname());
+        User user = new User(request.getLogin_id(), passwordEncoder.encode(request.getPassword()), request.getNickname());
         try {
             userRepository.save(user);
         } catch (DataIntegrityViolationException exception) {
@@ -43,7 +45,7 @@ public class UserService {
         User user = userRepository.findByLoginId(request.getLogin_id())
                 .orElseThrow(() -> new NotFoundException(USER_LOGIN_ID_NOT_EXIST));
 
-        if (user.getPassword().equals(request.getPassword())) {
+        if (passwordEncoder.matches(request.getPassword(), user.getPassword())) {
             return ApiResponse.success(USER_LOGIN_SUCCESS, UserLoginDto.from(user.getId()));
         } else {
             throw new NotFoundException(USER_PASSWORD_NOT_EXIST);
@@ -54,6 +56,8 @@ public class UserService {
 
         User user = userRepository.findById(user_id)
                 .orElseThrow(() -> new NotFoundException(USER_NOT_EXIST));
+        request.setPassword(passwordEncoder.encode(request.getPassword()));
+
         try {
             User userChanged = userRepository.save(user.change(request));
             return ApiResponse.success(USER_INFO_CHANGE_SUCCESS, UserChangeDto.from(userChanged));

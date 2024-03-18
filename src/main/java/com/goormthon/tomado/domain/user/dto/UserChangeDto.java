@@ -23,6 +23,10 @@ public class UserChangeDto {
             this.character_url = character_url;
         }
 
+        public void setPassword(String password) {
+            this.password = password;
+        }
+
     }
 
     @Getter
