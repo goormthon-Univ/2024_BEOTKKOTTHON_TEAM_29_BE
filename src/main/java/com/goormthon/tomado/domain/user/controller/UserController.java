@@ -37,4 +37,9 @@ public class UserController {
         return userService.findById(user_id);
     }
 
+    @DeleteMapping("/users/{user_id}")
+    public ApiResponse withdraw(@PathVariable Long user_id) {
+        return userService.withdraw(user_id);
+    }
+
 }

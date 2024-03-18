@@ -59,4 +59,11 @@ public class UserService {
                 .orElseThrow(() -> new NotFoundException(USER_NOT_EXIST));
         return ApiResponse.success(USER_INFO_FIND_SUCCESS, UserInfoDto.from(user));
     }
+
+    public ApiResponse withdraw(Long userId) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new NotFoundException(USER_NOT_EXIST));
+        userRepository.delete(user);
+        return ApiResponse.success(USER_WITHDRAW_SUCCESS);
+    }
+
 }
