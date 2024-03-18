@@ -1,6 +1,7 @@
 package com.goormthon.tomado.domain.user.service;
 
 import com.goormthon.tomado.common.ApiResponse;
+import com.goormthon.tomado.common.exception.BadRequestException;
 import com.goormthon.tomado.common.exception.NotFoundException;
 import com.goormthon.tomado.domain.user.dto.UserChangeDto;
 import com.goormthon.tomado.domain.user.dto.UserInfoDto;
@@ -11,6 +12,8 @@ import com.goormthon.tomado.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.sql.SQLIntegrityConstraintViolationException;
+
 import static com.goormthon.tomado.common.response.ErrorMessage.*;
 import static com.goormthon.tomado.common.response.SuccessMessage.*;
 
@@ -20,10 +23,14 @@ public class UserService {
 
     final private UserRepository userRepository;
 
-    public ApiResponse<UserSignUpDto.Response> signUp(UserSignUpDto.Request request) {
+    public ApiResponse<UserSignUpDto.Response> signUp(UserSignUpDto.Request request) throws SQLIntegrityConstraintViolationException {
 
         User user = new User(request.getLogin_id(), request.getPassword(), request.getNickname());
-        userRepository.save(user);
+        try {
+            userRepository.save(user);
+        } catch (RuntimeException exception) {
+            throw new BadRequestException(USER_LOGIN_ID_VALIDATE);
+        }
         return ApiResponse.success(USER_SIGNUP_SUCCESS, UserSignUpDto.from(user));
 
     }
@@ -44,13 +51,16 @@ public class UserService {
         }
     }
 
-    public ApiResponse<UserChangeDto.Response> change(Long user_id, UserChangeDto.Request request) {
+    public ApiResponse<UserChangeDto.Response> change(Long user_id, UserChangeDto.Request request) throws SQLIntegrityConstraintViolationException {
 
         User user = userRepository.findById(user_id)
                 .orElseThrow(() -> new NotFoundException(USER_NOT_EXIST));
-        User userChanged = userRepository.save(user.change(request));
-
-        return ApiResponse.success(USER_INFO_CHANGE_SUCCESS, UserChangeDto.from(userChanged));
+        try {
+            User userChanged = userRepository.save(user.change(request));
+            return ApiResponse.success(USER_INFO_CHANGE_SUCCESS, UserChangeDto.from(userChanged));
+        } catch (RuntimeException exception) {
+            throw new BadRequestException(USER_LOGIN_ID_VALIDATE);
+        }
 
     }
 
