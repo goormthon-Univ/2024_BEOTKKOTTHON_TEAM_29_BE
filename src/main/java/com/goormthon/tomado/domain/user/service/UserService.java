@@ -28,6 +28,10 @@ public class UserService {
 
     }
 
+    public ApiResponse<Boolean> validateLoginId(String loginId) {
+        return ApiResponse.success(LOGIN_ID_VALIDATE_SUCCESS, userRepository.findByLoginId(loginId).isPresent());
+    }
+
     public ApiResponse<UserLoginDto.Response> login(UserLoginDto.Request request) {
 
         User user = userRepository.findByLoginId(request.getLogin_id())
@@ -55,5 +59,4 @@ public class UserService {
                 .orElseThrow(() -> new NotFoundException(USER_NOT_EXIST));
         return ApiResponse.success(USER_INFO_FIND_SUCCESS, UserInfoDto.from(user));
     }
-
 }

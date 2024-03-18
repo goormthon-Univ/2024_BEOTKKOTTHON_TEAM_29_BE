@@ -1,10 +1,7 @@
 package com.goormthon.tomado.domain.user.controller;
 
 import com.goormthon.tomado.common.ApiResponse;
-import com.goormthon.tomado.domain.user.dto.UserChangeDto;
-import com.goormthon.tomado.domain.user.dto.UserInfoDto;
-import com.goormthon.tomado.domain.user.dto.UserLoginDto;
-import com.goormthon.tomado.domain.user.dto.UserSignUpDto;
+import com.goormthon.tomado.domain.user.dto.*;
 import com.goormthon.tomado.domain.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +15,11 @@ public class UserController {
     @PostMapping("users/signup")
     public ApiResponse<UserSignUpDto.Response> signUp(@RequestBody UserSignUpDto.Request request) {
         return userService.signUp(request);
+    }
+
+    @PostMapping("/users/signup/exists")
+    public ApiResponse<Boolean> validateLoginId(@RequestBody LoginIdCheckDto loginIdCheckDto) {
+        return userService.validateLoginId(loginIdCheckDto.getLogin_id());
     }
 
     @PostMapping("users/login")
