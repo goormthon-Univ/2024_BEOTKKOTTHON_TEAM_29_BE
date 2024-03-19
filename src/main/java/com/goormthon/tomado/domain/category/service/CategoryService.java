@@ -42,7 +42,7 @@ public class CategoryService {
 
     public ApiResponse<CategoryListDto> findAllCategories(Long user_id) {
         User user = userRepository.findById(user_id)
-                .orElseThrow(() -> new NotFoundException(ErrorMessage.USER_LOGIN_ID_NOT_EXIST));
+                .orElseThrow(() -> new NotFoundException(USER_NOT_EXIST));
 
         return ApiResponse.success(CATEGORY_LIST_FETCH_SUCCESS, CategoryListDto.from(user.getCategoryList()));
     }
