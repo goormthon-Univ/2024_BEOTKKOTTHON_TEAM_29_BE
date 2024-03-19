@@ -16,8 +16,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
-import static com.goormthon.tomado.common.response.ErrorMessage.CATEGORY_NOT_EXIST;
-import static com.goormthon.tomado.common.response.ErrorMessage.CATEGORY_TITLE_EXISTS;
+import static com.goormthon.tomado.common.response.ErrorMessage.*;
 import static com.goormthon.tomado.common.response.SuccessMessage.*;
 
 @Service
@@ -28,8 +27,7 @@ public class CategoryService {
     final private UserRepository userRepository;
 
     public ApiResponse<CategoryCreateDto.Response> createCategory(CategoryCreateDto.Request request) {
-        User user = userRepository.findByLoginId(request.getLogin_id())
-                .orElseThrow(() -> new NotFoundException(ErrorMessage.USER_LOGIN_ID_NOT_EXIST));
+        User user = getUserByLoginId(request.getLogin_id());
 
         if (categoryRepository.existsByTitle(request.getTitle())) {
             throw new BadRequestException(CATEGORY_TITLE_EXISTS);
@@ -42,15 +40,13 @@ public class CategoryService {
     }
 
     public ApiResponse<CategoryListDto> findAllCategories(String login_id) {
-        User user = userRepository.findByLoginId(login_id)
-                .orElseThrow(() -> new NotFoundException(ErrorMessage.USER_LOGIN_ID_NOT_EXIST));
+        User user = getUserByLoginId(login_id);
 
         return ApiResponse.success(CATEGORY_LIST_FETCH_SUCCESS, CategoryListDto.from(user.getCategoryList()));
     }
 
     public ApiResponse<CategoryDto> updateCategory(Long category_id, CategoryUpdateDto.Request request) {
-        Category category =  categoryRepository.findById(category_id)
-                .orElseThrow(() -> new NotFoundException(CATEGORY_NOT_EXIST));
+        Category category =  getCategoryByCategoryId(category_id);
 
         try {
             Category categoryUpdated = categoryRepository.save(category.update(request));
@@ -61,9 +57,20 @@ public class CategoryService {
     }
 
     public ApiResponse deleteCategory(Long category_id) {
-        Category category =  categoryRepository.findById(category_id)
-                .orElseThrow(() -> new NotFoundException(CATEGORY_NOT_EXIST));
+        Category category =  getCategoryByCategoryId(category_id);
         categoryRepository.delete(category);
         return ApiResponse.success(CATEGORY_DELETE_SUCCESS);
+    }
+
+    public User getUserByLoginId(String loginId) {
+        User user = userRepository.findByLoginId(loginId)
+                .orElseThrow(() -> new NotFoundException(ErrorMessage.USER_LOGIN_ID_NOT_EXIST));
+        return user;
+    }
+
+    public Category getCategoryByCategoryId(Long categoryId) {
+        Category category =  categoryRepository.findById(categoryId)
+                .orElseThrow(() -> new NotFoundException(CATEGORY_NOT_EXIST));
+        return category;
     }
 }
