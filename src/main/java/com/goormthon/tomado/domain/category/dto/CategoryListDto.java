@@ -20,6 +20,7 @@ public class CategoryListDto {
 
     public static CategoryListDto from(List<Category> categoryList) {
         List<CategoryDto> categoryDtoList = categoryList.stream()
+                .filter(category -> !category.isDeleted())
                 .map(category -> new CategoryDto(category.getTitle(), category.getColor(), category.getTomato()))
                 .collect(Collectors.toList());
 

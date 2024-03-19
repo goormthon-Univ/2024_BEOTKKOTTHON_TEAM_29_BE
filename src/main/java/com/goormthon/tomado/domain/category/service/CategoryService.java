@@ -63,7 +63,12 @@ public class CategoryService {
 
     public ApiResponse deleteCategory(Long category_id) {
         Category category =  getCategoryByCategoryId(category_id);
-        categoryRepository.delete(category);
+
+        if (category.getTomato() == 0) {
+            categoryRepository.delete(category);
+        } else {
+            categoryRepository.save(category.delete());
+        }
         return ApiResponse.success(CATEGORY_DELETE_SUCCESS);
     }
 

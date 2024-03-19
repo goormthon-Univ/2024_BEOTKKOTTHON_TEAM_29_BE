@@ -34,6 +34,9 @@ public class Category {
     @Column
     private int tomato = 0; // 토마토 초기값 : 0
 
+    @Column
+    private boolean isDeleted;
+
     @OneToMany(mappedBy = "category")
     private final List<Task> taskList = new ArrayList<>();
 
@@ -49,6 +52,11 @@ public class Category {
         }
         this.color = request.getColor();
 
+        return this;
+    }
+
+    public Category delete() {
+        this.isDeleted = true;
         return this;
     }
 }
