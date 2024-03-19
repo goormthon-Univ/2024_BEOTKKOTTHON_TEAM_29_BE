@@ -5,6 +5,7 @@ import com.goormthon.tomado.common.exception.BadRequestException;
 import com.goormthon.tomado.common.exception.NotFoundException;
 import com.goormthon.tomado.common.response.ErrorMessage;
 import com.goormthon.tomado.domain.category.dto.CategoryCreateDto;
+import com.goormthon.tomado.domain.category.dto.CategoryListDto;
 import com.goormthon.tomado.domain.category.entity.Category;
 import com.goormthon.tomado.domain.category.repository.CategoryRepository;
 import com.goormthon.tomado.domain.user.entity.User;
@@ -13,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import static com.goormthon.tomado.common.response.ErrorMessage.CATEGORY_TITLE_EXISTS;
+import static com.goormthon.tomado.common.response.SuccessMessage.CATEGORY_LIST_FETCH_SUCCESS;
 import static com.goormthon.tomado.common.response.SuccessMessage.CATEGORY_SAVE_SUCCESS;
 
 @Service
@@ -34,5 +36,12 @@ public class CategoryService {
         categoryRepository.save(category);
 
         return ApiResponse.success(CATEGORY_SAVE_SUCCESS, CategoryCreateDto.from(category));
+    }
+
+    public ApiResponse<CategoryListDto> findAllCategories(String login_id) {
+        User user = userRepository.findByLoginId(login_id)
+                .orElseThrow(() -> new NotFoundException(ErrorMessage.USER_LOGIN_ID_NOT_EXIST));
+
+        return ApiResponse.success(CATEGORY_LIST_FETCH_SUCCESS, CategoryListDto.from(user.getCategoryList()));
     }
 }
