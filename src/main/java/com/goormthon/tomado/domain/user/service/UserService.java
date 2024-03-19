@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import static com.goormthon.tomado.common.response.ErrorMessage.*;
 import static com.goormthon.tomado.common.response.SuccessMessage.*;
@@ -24,6 +25,7 @@ public class UserService {
     final private UserRepository userRepository;
     final private PasswordEncoder passwordEncoder;
 
+    @Transactional
     public ApiResponse<UserSignUpDto.Response> signUp(UserSignUpDto.Request request) {
 
         User user = new User(request.getLogin_id(), passwordEncoder.encode(request.getPassword()), request.getNickname());
@@ -40,6 +42,7 @@ public class UserService {
         return ApiResponse.success(LOGIN_ID_VALIDATE_SUCCESS, userRepository.findByLoginId(loginId).isPresent());
     }
 
+    @Transactional
     public ApiResponse<UserLoginDto.Response> login(UserLoginDto.Request request) {
 
         User user = userRepository.findByLoginId(request.getLogin_id())
@@ -52,6 +55,7 @@ public class UserService {
         }
     }
 
+    @Transactional
     public ApiResponse<UserChangeDto.Response> change(Long user_id, UserChangeDto.Request request) {
 
         User user = userRepository.findById(user_id)
@@ -67,12 +71,14 @@ public class UserService {
 
     }
 
+    @Transactional(readOnly = true)
     public ApiResponse<UserInfoDto> findById(Long userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException(USER_NOT_EXIST));
         return ApiResponse.success(USER_INFO_FIND_SUCCESS, UserInfoDto.from(user));
     }
 
+    @Transactional
     public ApiResponse withdraw(Long userId) {
         User user = userRepository.findById(userId).orElseThrow(() -> new NotFoundException(USER_NOT_EXIST));
         userRepository.delete(user);
