@@ -6,11 +6,18 @@ import com.goormthon.tomado.domain.memo.service.MemoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 public class MemoController {
 
     public final MemoService memoService;
+
+    @GetMapping("/memos/{user_id}")
+    public ApiResponse<MemoDto.ResponseList> getMemoList(@PathVariable Long user_id) {
+        return memoService.getMemoList(user_id);
+    }
 
     @PostMapping("/memos/{user_id}")
     public ApiResponse write(@PathVariable Long user_id, @RequestBody MemoDto.Write write) {

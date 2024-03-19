@@ -18,7 +18,8 @@ public enum SuccessMessage {
     USER_WITHDRAW_SUCCESS(OK, "회원 탈퇴 성공"),
 
     MEMO_CREATE_SUCCESS(CREATED, "메모 작성 성공"),
-    MEMO_DELETE_SUCCESS(OK, "메모 삭제 성공")
+    MEMO_DELETE_SUCCESS(OK, "메모 삭제 성공"),
+    MEMO_LIST_FETCH_SUCCESS(OK, "메모 조회 성공")
     ;
 
     private final HttpStatus httpStatus;
