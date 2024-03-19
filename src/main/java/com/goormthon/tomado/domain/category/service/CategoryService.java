@@ -15,11 +15,15 @@ import com.goormthon.tomado.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 import static com.goormthon.tomado.common.response.ErrorMessage.*;
 import static com.goormthon.tomado.common.response.SuccessMessage.*;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class CategoryService {
 
@@ -28,10 +32,7 @@ public class CategoryService {
 
     public ApiResponse<CategoryCreateDto.Response> createCategory(CategoryCreateDto.Request request) {
         User user = getUserByLoginId(request.getLogin_id());
-
-        if (categoryRepository.existsByTitle(request.getTitle())) {
-            throw new BadRequestException(CATEGORY_TITLE_EXISTS);
-        }
+        handleDuplicateTitleException(user, request.getTitle());
 
         Category category = new Category(user, request.getTitle(), request.getColor());
         categoryRepository.save(category);
@@ -39,14 +40,18 @@ public class CategoryService {
         return ApiResponse.success(CATEGORY_SAVE_SUCCESS, CategoryCreateDto.from(category));
     }
 
-    public ApiResponse<CategoryListDto> findAllCategories(String login_id) {
-        User user = getUserByLoginId(login_id);
+    public ApiResponse<CategoryListDto> findAllCategories(Long user_id) {
+        User user = userRepository.findById(user_id)
+                .orElseThrow(() -> new NotFoundException(ErrorMessage.USER_LOGIN_ID_NOT_EXIST));
 
         return ApiResponse.success(CATEGORY_LIST_FETCH_SUCCESS, CategoryListDto.from(user.getCategoryList()));
     }
 
     public ApiResponse<CategoryDto> updateCategory(Long category_id, CategoryUpdateDto.Request request) {
         Category category =  getCategoryByCategoryId(category_id);
+        User user = getUserByLoginId(request.getLogin_id());
+
+        handleDuplicateTitleException(user, request.getTitle());
 
         try {
             Category categoryUpdated = categoryRepository.save(category.update(request));
@@ -62,15 +67,24 @@ public class CategoryService {
         return ApiResponse.success(CATEGORY_DELETE_SUCCESS);
     }
 
-    public User getUserByLoginId(String loginId) {
-        User user = userRepository.findByLoginId(loginId)
+    private User getUserByLoginId(String loinId) {
+        User user = userRepository.findByLoginId(loinId)
                 .orElseThrow(() -> new NotFoundException(ErrorMessage.USER_LOGIN_ID_NOT_EXIST));
         return user;
     }
 
-    public Category getCategoryByCategoryId(Long categoryId) {
+    private Category getCategoryByCategoryId(Long categoryId) {
         Category category =  categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new NotFoundException(CATEGORY_NOT_EXIST));
         return category;
+    }
+
+    private void handleDuplicateTitleException(User user, String title) {
+        List<Category> categoryList = categoryRepository.findByUser(user);
+        boolean titleExists = categoryList.stream()
+                .anyMatch(category -> category.getTitle().equals(title));
+        if (titleExists) {
+            throw new BadRequestException(CATEGORY_TITLE_EXISTS);
+        }
     }
 }

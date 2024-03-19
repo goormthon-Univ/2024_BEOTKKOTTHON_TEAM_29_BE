@@ -21,9 +21,9 @@ public class CategoryController {
         return categoryService.createCategory(request);
     }
 
-    @GetMapping("/{login_id}")
-    public ApiResponse<CategoryListDto> findAllCategories(@PathVariable(name = "login_id") String login_id) {
-        return categoryService.findAllCategories(login_id);
+    @GetMapping("/{user_id}")
+    public ApiResponse<CategoryListDto> findAllCategories(@PathVariable(name = "user_id") Long user_id) {
+        return categoryService.findAllCategories(user_id);
     }
 
     @PutMapping("/{category_id}")

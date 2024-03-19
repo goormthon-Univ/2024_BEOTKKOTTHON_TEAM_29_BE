@@ -12,10 +12,12 @@ public class CategoryUpdateDto {
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
     public static class Request {
 
+        private String login_id;
         private String title;
         private ColorType color;
 
-        private Request(String title, ColorType color) {
+        private Request(String login_id, String title, ColorType color) {
+            this.login_id = login_id;
             this.title = title;
             this.color = color;
         }
