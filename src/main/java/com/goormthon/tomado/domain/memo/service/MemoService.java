@@ -22,6 +22,7 @@ public class MemoService {
     private final UserRepository userRepository;
     private final MemoRepository memoRepository;
 
+    @Transactional(readOnly = true)
     public ApiResponse<MemoDto.ResponseList> getMemoList(Long userId) {
 
         User user = userRepository.findById(userId)
