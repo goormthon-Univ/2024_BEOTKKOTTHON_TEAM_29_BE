@@ -37,10 +37,26 @@ springdoc:
       paths-to-match:
         - "/users/**"
         - "/book/**"
+    - group: "task"
+      display-name: "Task API"
+      paths-to-match:
+        - "/tasks**"
+    - group: "category"
+      display-name: "Category API"
+      paths-to-match:
+        - "/categories/**"
+    - group: "shop"
+      display-name: "Shop API"
+      paths-to-match:
+        - "/shop/**"
+    - group: "club"
+      display-name: "Club API"
+      paths-to-match:
+        - "/club**"
     - group: "all"
       display-name: "All API"
       paths-to-match:
         - "/**"
   writer-with-default-pretty-printer: true
   use-management-port: false
-  packages-to-scan: com.goormthon.tomado.domain.user.controller
+  packages-to-scan: com.goormthon.tomado.domain.user.controller, com.goormthon.tomado.domain.tomado.controller, com.goormthon.tomado.domain.task.controller ,com.goormthon.tomado.domain.memo.controller, com.goormthon.tomado.domain.club.controller, com.goormthon.tomado.domain.category.controller
