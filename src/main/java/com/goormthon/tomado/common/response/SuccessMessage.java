@@ -15,7 +15,9 @@ public enum SuccessMessage {
     USER_INFO_CHANGE_SUCCESS(OK, "회원 정보 수정 성공"),
     USER_INFO_FIND_SUCCESS(OK, "회원 조회 성공"),
     LOGIN_ID_VALIDATE_SUCCESS(OK, "아이디 중복 체크 성공"),
-    USER_WITHDRAW_SUCCESS(OK, "회원 탈퇴 성공")
+    USER_WITHDRAW_SUCCESS(OK, "회원 탈퇴 성공"),
+
+    MEMO_CREATE_SUCCESS(CREATED, "메모 작성 성공")
     ;
 
     private final HttpStatus httpStatus;
