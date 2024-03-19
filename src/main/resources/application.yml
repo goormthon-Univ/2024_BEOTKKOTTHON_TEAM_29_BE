@@ -15,3 +15,48 @@ spring:
         show_sql: true
         format_sql: true
         default_batch_fetch_size: 1000
+
+# swagger 설정
+springdoc:
+  swagger-ui:
+    groups-order: desc
+    default-model-rendering: example
+    operations-sorter: method
+    tags-sorter: alpha
+    disable-swagger-default-url: true
+    display-request-duration: true
+    deep-linking: true
+    default-model-expand-depth: 2
+    default-models-expand-depth: 2
+  api-docs:
+    path: /tomaDo-docs
+  show-actuator: true
+  group-configs:
+    - group: "user"
+      display-name: "User API"
+      paths-to-match:
+        - "/users/**"
+        - "/book/**"
+    - group: "task"
+      display-name: "Task API"
+      paths-to-match:
+        - "/tasks**"
+    - group: "category"
+      display-name: "Category API"
+      paths-to-match:
+        - "/categories/**"
+    - group: "shop"
+      display-name: "Shop API"
+      paths-to-match:
+        - "/shop/**"
+    - group: "club"
+      display-name: "Club API"
+      paths-to-match:
+        - "/club**"
+    - group: "all"
+      display-name: "All API"
+      paths-to-match:
+        - "/**"
+  writer-with-default-pretty-printer: true
+  use-management-port: false
+  packages-to-scan: com.goormthon.tomado.domain.user.controller, com.goormthon.tomado.domain.tomado.controller, com.goormthon.tomado.domain.task.controller ,com.goormthon.tomado.domain.memo.controller, com.goormthon.tomado.domain.club.controller, com.goormthon.tomado.domain.category.controller
