@@ -59,4 +59,11 @@ public class CategoryService {
             throw new BadRequestException(CATEGORY_NOT_EXIST);
         }
     }
+
+    public ApiResponse deleteCategory(Long category_id) {
+        Category category =  categoryRepository.findById(category_id)
+                .orElseThrow(() -> new NotFoundException(CATEGORY_NOT_EXIST));
+        categoryRepository.delete(category);
+        return ApiResponse.success(CATEGORY_DELETE_SUCCESS);
+    }
 }

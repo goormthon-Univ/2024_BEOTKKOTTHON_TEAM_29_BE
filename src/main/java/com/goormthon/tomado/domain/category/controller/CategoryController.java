@@ -30,4 +30,9 @@ public class CategoryController {
     public ApiResponse<CategoryDto> updateCategory(@PathVariable(name = "category_id") Long category_id, @RequestBody CategoryUpdateDto.Request request) {
         return categoryService.updateCategory(category_id, request);
     }
+
+    @DeleteMapping("/{category_id}")
+    public ApiResponse deleteCategory(@PathVariable(name = "category_id") Long category_id) {
+        return categoryService.deleteCategory(category_id);
+    }
 }

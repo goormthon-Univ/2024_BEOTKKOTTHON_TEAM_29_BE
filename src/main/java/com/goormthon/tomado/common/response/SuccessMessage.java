@@ -19,7 +19,8 @@ public enum SuccessMessage {
 
     CATEGORY_SAVE_SUCCESS(OK, "카테고리 생성 성공"),
     CATEGORY_LIST_FETCH_SUCCESS(OK, "카테고리 조회 성공"),
-    CATEGORY_UPDATE_SUCCESS(OK, "카테고리 수정 성공")
+    CATEGORY_UPDATE_SUCCESS(OK, "카테고리 수정 성공"),
+    CATEGORY_DELETE_SUCCESS(OK, "카테고리 삭제 성공")
     ;
 
     private final HttpStatus httpStatus;
