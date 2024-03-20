@@ -73,6 +73,10 @@ public class CategoryService {
         Category category =  getCategory(category_id, user_id);
 
         if (category.getTomato() == 0) {
+            List<Task> taskList = category.getTaskList();
+            for (Task task : taskList) {
+                taskRepository.delete(task);
+            }
             categoryRepository.delete(category);
         } else {
             categoryRepository.save(category.delete());
