@@ -1,5 +1,6 @@
 package com.goormthon.tomado.domain.category.entity;
 
+import com.goormthon.tomado.domain.category.dto.CategoryUpdateDto;
 import com.goormthon.tomado.domain.task.entity.Task;
 import com.goormthon.tomado.domain.user.entity.User;
 import jakarta.persistence.*;
@@ -33,6 +34,9 @@ public class Category {
     @Column
     private int tomato = 0; // 토마토 초기값 : 0
 
+    @Column
+    private boolean isDeleted;
+
     @OneToMany(mappedBy = "category")
     private final List<Task> taskList = new ArrayList<>();
 
@@ -42,4 +46,17 @@ public class Category {
         this.color = color;
     }
 
+    public Category update(CategoryUpdateDto.Request request) {
+        if (request.getTitle() != null) {
+            this.title = request.getTitle();
+        }
+        this.color = request.getColor();
+
+        return this;
+    }
+
+    public Category delete() {
+        this.isDeleted = true;
+        return this;
+    }
 }
