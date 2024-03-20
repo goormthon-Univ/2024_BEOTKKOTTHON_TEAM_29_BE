@@ -77,4 +77,9 @@ public class User {
         return this;
     }
 
+    public User addToma(int toma) {
+        this.tomato += toma;
+        return this;
+    }
+
 }

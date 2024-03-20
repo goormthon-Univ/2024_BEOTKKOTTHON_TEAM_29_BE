@@ -26,7 +26,12 @@ public enum SuccessMessage {
 
     MEMO_CREATE_SUCCESS(CREATED, "메모 작성 성공"),
     MEMO_DELETE_SUCCESS(OK, "메모 삭제 성공"),
-    MEMO_LIST_FETCH_SUCCESS(OK, "메모 조회 성공")
+    MEMO_LIST_FETCH_SUCCESS(OK, "메모 조회 성공"),
+  
+    TASK_SAVE_SUCCESS(CREATED, "Task 생성 성공"),
+    TOMA_SAVE_SUCCESS(OK, "토마 적립 성공"),
+    TASK_TOMA_LIST_FETCH_SUCCESS(OK, "월별 토마 개수 조회 성공")
+
     ;
 
     private final HttpStatus httpStatus;
