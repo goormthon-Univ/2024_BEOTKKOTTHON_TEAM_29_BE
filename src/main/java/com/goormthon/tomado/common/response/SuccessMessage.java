@@ -23,6 +23,7 @@ public enum SuccessMessage {
     CATEGORY_DELETE_SUCCESS(OK, "카테고리 삭제 성공"),
 
     TASK_SAVE_SUCCESS(CREATED, "Task 생성 성공"),
+    TOMA_SAVE_SUCCESS(OK, "토마 적립 성공"),
     TASK_TOMA_LIST_FETCH_SUCCESS(OK, "월별 토마 개수 조회 성공")
     ;
 

@@ -4,6 +4,7 @@ import com.goormthon.tomado.common.ApiResponse;
 import com.goormthon.tomado.common.exception.NotFoundException;
 import com.goormthon.tomado.domain.category.entity.Category;
 import com.goormthon.tomado.domain.category.repository.CategoryRepository;
+import com.goormthon.tomado.domain.task.dto.SaveTomaRequest;
 import com.goormthon.tomado.domain.task.dto.TomaCount;
 import com.goormthon.tomado.domain.task.dto.TomaCountListResponse;
 import com.goormthon.tomado.domain.task.dto.TaskCreateDto;
@@ -44,6 +45,26 @@ public class TaskService {
         taskRepository.save(task);
 
         return ApiResponse.success(TASK_SAVE_SUCCESS, TaskCreateDto.from(task));
+    }
+
+    public ApiResponse saveToma(SaveTomaRequest request) {
+        Task task = taskRepository.findByIdAndUserId(request.getTask_id(), request.getUser_id())
+                .orElseThrow(() -> new NotFoundException(TASK_NOT_EXIST));
+        Category category = task.getCategory();
+        User user = task.getUser();
+
+        int toma = request.getMode() == 0 ? 1 : 3;
+
+        if (!request.getCreated_at().toLocalDate().isEqual(task.getCreatedAt().toLocalDate())) {
+            task = new Task(user, task.getTitle(), category);
+            taskRepository.save(task);
+        }
+
+        taskRepository.save(task.addToma(toma));
+        categoryRepository.save(category.addToma(toma));
+        userRepository.save(user.addToma(toma));
+
+        return ApiResponse.success(TOMA_SAVE_SUCCESS);
     }
 
     public ApiResponse<TomaCountListResponse> getTomaCountByMonth(Long userId, int month) {

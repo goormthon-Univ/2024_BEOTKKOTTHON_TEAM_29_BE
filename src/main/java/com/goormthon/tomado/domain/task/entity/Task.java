@@ -47,4 +47,9 @@ public class Task {
         this.category = category;
     }
 
+    public Task addToma(int toma) {
+        this.tomato += toma;
+        return this;
+    }
+
 }

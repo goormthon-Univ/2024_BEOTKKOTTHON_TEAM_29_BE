@@ -1,6 +1,7 @@
 package com.goormthon.tomado.domain.task.controller;
 
 import com.goormthon.tomado.common.ApiResponse;
+import com.goormthon.tomado.domain.task.dto.SaveTomaRequest;
 import com.goormthon.tomado.domain.task.dto.TaskCreateDto;
 import com.goormthon.tomado.domain.task.dto.TomaCountListResponse;
 import com.goormthon.tomado.domain.task.service.TaskService;
@@ -17,6 +18,11 @@ public class TaskController {
     @PostMapping
     public ApiResponse<TaskCreateDto.Response> createTask(@RequestBody TaskCreateDto.Request request) {
         return taskService.createTask(request);
+    }
+
+    @PostMapping("/toma")
+    public ApiResponse saveToma(@RequestBody SaveTomaRequest request) {
+        return taskService.saveToma(request);
     }
 
     @GetMapping
