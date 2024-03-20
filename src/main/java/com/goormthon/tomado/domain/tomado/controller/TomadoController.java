@@ -4,10 +4,7 @@ import com.goormthon.tomado.common.ApiResponse;
 import com.goormthon.tomado.domain.tomado.dto.TomadoDto;
 import com.goormthon.tomado.domain.tomado.service.TomadoService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/shop")
@@ -19,6 +16,11 @@ public class TomadoController {
     @GetMapping("/{tomado_id}")
     public ApiResponse<TomadoDto.Response> findById(@PathVariable Long tomado_id) {
         return tomadoService.findById(tomado_id);
+    }
+
+    @GetMapping("")
+    public ApiResponse<TomadoDto.SimpleResponseList> findAvailableTomadoList(@RequestParam Long user) {
+        return tomadoService.findAvailableTomadoList(user);
     }
 
 }

@@ -4,6 +4,8 @@ import com.goormthon.tomado.domain.tomado.entity.Tomado;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 public class TomadoDto {
 
     @Getter
@@ -21,6 +23,27 @@ public class TomadoDto {
             this.name = name;
             this.content = content;
             this.tomato = tomato;
+        }
+    }
+
+    @Getter
+    @NoArgsConstructor
+    public static class SimpleResponse {
+        private Long tomado_id;
+
+        public SimpleResponse(Long tomado_id) {
+            this.tomado_id = tomado_id;
+        }
+
+    }
+
+    @Getter
+    @NoArgsConstructor
+    public static class SimpleResponseList {
+        private List<SimpleResponse> tomadoList;
+
+        public SimpleResponseList(List<SimpleResponse> tomadoList) {
+            this.tomadoList = tomadoList;
         }
     }
 
