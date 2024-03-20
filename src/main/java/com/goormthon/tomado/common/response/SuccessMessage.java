@@ -22,7 +22,7 @@ public enum SuccessMessage {
     CATEGORY_UPDATE_SUCCESS(OK, "카테고리 수정 성공"),
     CATEGORY_DELETE_SUCCESS(OK, "카테고리 삭제 성공"),
 
-    TASK_SAVE_SUCCESS(OK, "Task 생성 성공")
+    TASK_SAVE_SUCCESS(OK, "Task 생성 성공"),
 
     MEMO_CREATE_SUCCESS(CREATED, "메모 작성 성공"),
     MEMO_DELETE_SUCCESS(OK, "메모 삭제 성공"),
