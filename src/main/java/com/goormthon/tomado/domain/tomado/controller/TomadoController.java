@@ -23,4 +23,9 @@ public class TomadoController {
         return tomadoService.findAvailableTomadoList(user);
     }
 
+    @PostMapping
+    public ApiResponse buyTomado(@RequestParam(name = "user") Long user_id, @RequestParam(name = "tomado") Long tomado_id) {
+        return tomadoService.buyTomado(user_id, tomado_id);
+    }
+
 }

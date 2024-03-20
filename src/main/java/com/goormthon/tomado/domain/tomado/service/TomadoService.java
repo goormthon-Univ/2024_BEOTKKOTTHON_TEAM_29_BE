@@ -1,8 +1,8 @@
 package com.goormthon.tomado.domain.tomado.service;
 
 import com.goormthon.tomado.common.ApiResponse;
+import com.goormthon.tomado.common.exception.BadRequestException;
 import com.goormthon.tomado.common.exception.NotFoundException;
-import com.goormthon.tomado.common.response.ErrorMessage;
 import com.goormthon.tomado.common.response.SuccessMessage;
 import com.goormthon.tomado.domain.tomado.dto.TomadoDto;
 import com.goormthon.tomado.domain.tomado.entity.Tomado;
@@ -17,6 +17,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.goormthon.tomado.common.response.ErrorMessage.*;
 
 @Service
 @RequiredArgsConstructor
@@ -33,7 +35,7 @@ public class TomadoService {
     @Transactional(readOnly = true)
     public ApiResponse<TomadoDto.Response> findById(Long tomadoId) {
         Tomado tomado = tomadoRepository.findById(tomadoId)
-                .orElseThrow(() -> new NotFoundException(ErrorMessage.TOMADO_NOT_EXIST));
+                .orElseThrow(() -> new NotFoundException(TOMADO_NOT_EXIST));
         return ApiResponse.success(SuccessMessage.TOMADO_FETCH_SUCCESS, TomadoDto.from(tomado));
     }
 
@@ -41,7 +43,7 @@ public class TomadoService {
     public ApiResponse<TomadoDto.SimpleResponseList> findAvailableTomadoList(Long userId) {
 
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new NotFoundException(ErrorMessage.USER_NOT_EXIST));
+                .orElseThrow(() -> new NotFoundException(USER_NOT_EXIST));
 
         // 사용자가 보유한 토마두 리스트 -> tomadoIdList : id 값만 따로 빼서 저장
         List<UserTomado> userTomadoList = userTomadoRepository.findByUserId(user.getId()).orElse(new ArrayList<UserTomado>());
@@ -67,6 +69,33 @@ public class TomadoService {
 
         return ApiResponse.success(SuccessMessage.TOMADO_FETCH_SUCCESS, new TomadoDto.SimpleResponseList(tomadoNotHaveList));
 
+    }
+
+    public ApiResponse buyTomado(Long userId, Long tomadoId) {
+        // 회원 정보 - 보유 토마량 확인
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundException(USER_NOT_EXIST));
+
+        // 토마두 정보 - 구매 토마량 확인
+        Tomado tomado = tomadoRepository.findById(tomadoId)
+                .orElseThrow(() -> new NotFoundException(TOMADO_NOT_EXIST));
+
+        // 구매한 토마두인지 확인
+        for (UserTomado userTomado : user.getUserTomadoList()) {
+            if (userTomado.getTomado().getId().equals(tomado.getId())) {
+                throw new BadRequestException(USER_TOMADO_ALREADY_EXIST);
+            }
+        }
+
+        if (user.getTomato() >= tomado.getTomato()) {
+            userTomadoRepository.save(new UserTomado(user, tomado));
+            user.addToma(-tomado.getTomato());
+            userRepository.save(user);
+        } else {
+            throw new BadRequestException(USER_TOMATO_NOT_ENOUGH);
+        }
+
+        return ApiResponse.success(SuccessMessage.TOMADO_BUY_SUCCESS);
     }
 
 }

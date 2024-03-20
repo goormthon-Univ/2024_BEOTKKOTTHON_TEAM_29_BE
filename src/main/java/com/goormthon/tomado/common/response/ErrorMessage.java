@@ -5,7 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
-import static org.springframework.http.HttpStatus.*;
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
@@ -23,7 +24,9 @@ public enum ErrorMessage {
   
     TASK_NOT_EXIST(NOT_FOUND, "존재하지 않는 Task"),
 
-    TOMADO_NOT_EXIST(NOT_FOUND, "존재하지 않는 토마두 캐릭터")
+    TOMADO_NOT_EXIST(NOT_FOUND, "존재하지 않는 토마두 캐릭터"),
+    USER_TOMATO_NOT_ENOUGH(BAD_REQUEST, "회원의 토마량 보유 부족"),
+    USER_TOMADO_ALREADY_EXIST(BAD_REQUEST, "이미 보유한 토마두")
     ;
 
     private final HttpStatus httpStatus;

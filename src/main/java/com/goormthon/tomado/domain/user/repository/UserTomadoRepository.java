@@ -1,5 +1,6 @@
 package com.goormthon.tomado.domain.user.repository;
 
+import com.goormthon.tomado.domain.tomado.entity.Tomado;
 import com.goormthon.tomado.domain.user.entity.UserTomado;
 import com.goormthon.tomado.domain.user.entity.UserTomadoId;
 import org.springframework.data.jpa.repository.JpaRepository;
