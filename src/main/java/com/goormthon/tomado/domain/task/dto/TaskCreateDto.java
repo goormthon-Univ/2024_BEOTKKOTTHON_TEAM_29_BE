@@ -28,14 +28,16 @@ public class TaskCreateDto {
     @Getter
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
     public static class Response {
+
+        private Long task_id;
         private String title;
 
-        public Response(String title) {
-            this.title = title;
+        public Response(Long task_id, String title) {
+            this.task_id = task_id;
         }
     }
 
     public static Response from(Task task) {
-        return new Response(task.getTitle());
+        return new Response(task.getId(), task.getTitle());
     }
 }

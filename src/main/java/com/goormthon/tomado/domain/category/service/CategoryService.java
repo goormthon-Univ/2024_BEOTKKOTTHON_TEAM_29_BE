@@ -16,7 +16,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import static com.goormthon.tomado.common.response.ErrorMessage.*;
 import static com.goormthon.tomado.common.response.SuccessMessage.*;
@@ -42,15 +45,32 @@ public class CategoryService {
 
     public ApiResponse<CategoryListDto> findAllCategories(Long user_id) {
         User user = getUserByUserId(user_id);
+        List<Category> categoryList = user.getCategoryList();
 
-        return ApiResponse.success(CATEGORY_LIST_FETCH_SUCCESS, CategoryListDto.from(user.getCategoryList()));
+        List<Response> categoryDtoList = categoryList.stream()
+                .filter(category -> !category.isDeleted())
+                .map(category -> new Response(category.getId(), category.getTitle(), category.getColor(), category.getTomato()))
+                .collect(Collectors.toList());
+
+        return ApiResponse.success(CATEGORY_LIST_FETCH_SUCCESS, CategoryListDto.from(categoryDtoList));
     }
 
     public ApiResponse<CategoryListByDateDto> findCategoriesByDate(Long user_id, LocalDate selected_date) {
         User user = getUserByUserId(user_id);
         List<Task> taskList = taskRepository.findByUserAndDate(user, selected_date);
 
-        return ApiResponse.success(CATEGORY_LIST_FETCH_SUCCESS, CategoryListByDateDto.fromCategoriesByDate(taskList));
+        Map<Category, Integer> categoryMap = new HashMap<>();
+        for (Task task : taskList) {
+            Category category = task.getCategory();
+            int tomatoCount = task.getTomato();
+            categoryMap.put(category, categoryMap.getOrDefault(category, 0) + tomatoCount);
+        }
+
+        List<SimpleResponse> simpleResponseList = categoryMap.entrySet().stream()
+                .map(entry -> new SimpleResponse(entry.getKey().getTitle(), entry.getKey().getColor(), entry.getValue()))
+                .collect(Collectors.toList());
+
+        return ApiResponse.success(CATEGORY_LIST_FETCH_SUCCESS, CategoryListByDateDto.fromCategoriesByDate(simpleResponseList));
     }
 
     public ApiResponse<SimpleResponse> updateCategory(Long category_id, CategoryUpdateDto.Request request) {

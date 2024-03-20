@@ -38,7 +38,7 @@ public class CategoryController {
         return categoryService.updateCategory(category_id, request);
     }
 
-    @DeleteMapping()
+    @DeleteMapping
     public ApiResponse deleteCategory(@RequestParam(name = "user") Long user_id, @RequestParam(name = "category") Long category_id) {
         return categoryService.deleteCategory(category_id, user_id);
     }

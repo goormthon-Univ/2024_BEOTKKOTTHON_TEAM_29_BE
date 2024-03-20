@@ -59,4 +59,9 @@ public class Category {
         this.isDeleted = true;
         return this;
     }
+
+    public Category addToma(int toma) {
+        this.tomato += toma;
+        return this;
+    }
 }
