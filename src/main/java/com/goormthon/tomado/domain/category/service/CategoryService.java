@@ -10,6 +10,8 @@ import com.goormthon.tomado.domain.category.dto.CategoryListDto;
 import com.goormthon.tomado.domain.category.dto.CategoryUpdateDto;
 import com.goormthon.tomado.domain.category.entity.Category;
 import com.goormthon.tomado.domain.category.repository.CategoryRepository;
+import com.goormthon.tomado.domain.task.entity.Task;
+import com.goormthon.tomado.domain.task.repository.TaskRepository;
 import com.goormthon.tomado.domain.user.entity.User;
 import com.goormthon.tomado.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +19,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import static com.goormthon.tomado.common.response.ErrorMessage.*;
@@ -29,6 +32,7 @@ public class CategoryService {
 
     final private CategoryRepository categoryRepository;
     final private UserRepository userRepository;
+    final private TaskRepository taskRepository;
 
     public ApiResponse<CategoryCreateDto.Response> createCategory(CategoryCreateDto.Request request) {
         User user = getUserByLoginId(request.getLogin_id());
@@ -41,10 +45,16 @@ public class CategoryService {
     }
 
     public ApiResponse<CategoryListDto> findAllCategories(Long user_id) {
-        User user = userRepository.findById(user_id)
-                .orElseThrow(() -> new NotFoundException(USER_NOT_EXIST));
+        User user = getUserByUserId(user_id);
 
-        return ApiResponse.success(CATEGORY_LIST_FETCH_SUCCESS, CategoryListDto.from(user.getCategoryList()));
+        return ApiResponse.success(CATEGORY_LIST_FETCH_SUCCESS, CategoryListDto.fromAll(user.getCategoryList()));
+    }
+
+    public ApiResponse<CategoryListDto> findCategoriesByDate(Long user_id, LocalDate selected_date) {
+        User user = getUserByUserId(user_id);
+        List<Task> taskList = taskRepository.findByUserAndDate(user, selected_date);
+
+        return ApiResponse.success(CATEGORY_LIST_FETCH_SUCCESS, CategoryListDto.fromCategoriesByDate(taskList));
     }
 
     public ApiResponse<CategoryDto> updateCategory(Long category_id, CategoryUpdateDto.Request request) {
@@ -74,7 +84,13 @@ public class CategoryService {
 
     private User getUserByLoginId(String loinId) {
         User user = userRepository.findByLoginId(loinId)
-                .orElseThrow(() -> new NotFoundException(ErrorMessage.USER_LOGIN_ID_NOT_EXIST));
+                .orElseThrow(() -> new NotFoundException(USER_NOT_EXIST));
+        return user;
+    }
+
+    private User getUserByUserId(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundException(USER_NOT_EXIST));
         return user;
     }
 
@@ -93,3 +109,4 @@ public class CategoryService {
         }
     }
 }
+
