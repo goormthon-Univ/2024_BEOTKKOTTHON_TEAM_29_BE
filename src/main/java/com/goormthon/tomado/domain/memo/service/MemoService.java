@@ -17,6 +17,7 @@ import static com.goormthon.tomado.common.response.ErrorMessage.*;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class MemoService {
 
     private final UserRepository userRepository;
@@ -31,7 +32,6 @@ public class MemoService {
 
     }
 
-    @Transactional
     public ApiResponse write(Long userId, MemoDto.Write write) {
 
         User user = userRepository.findById(userId)
@@ -42,7 +42,6 @@ public class MemoService {
 
     }
 
-    @Transactional
     public ApiResponse delete(Long userId, Long memoId) {
 
         User user = userRepository.findById(userId)
