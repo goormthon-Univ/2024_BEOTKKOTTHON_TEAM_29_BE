@@ -60,3 +60,4 @@ springdoc:
   writer-with-default-pretty-printer: true
   use-management-port: false
   packages-to-scan: com.goormthon.tomado.domain.user.controller, com.goormthon.tomado.domain.tomado.controller, com.goormthon.tomado.domain.task.controller ,com.goormthon.tomado.domain.memo.controller, com.goormthon.tomado.domain.club.controller, com.goormthon.tomado.domain.category.controller
+  use-fqn: true
