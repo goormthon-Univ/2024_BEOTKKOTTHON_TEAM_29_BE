@@ -7,7 +7,10 @@ import com.goormthon.tomado.domain.category.dto.CategoryListDto;
 import com.goormthon.tomado.domain.category.dto.CategoryUpdateDto;
 import com.goormthon.tomado.domain.category.service.CategoryService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDate;
 
 @RestController
 @RequiredArgsConstructor
@@ -24,6 +27,13 @@ public class CategoryController {
     @GetMapping("/{user_id}")
     public ApiResponse<CategoryListDto> findAllCategories(@PathVariable(name = "user_id") Long user_id) {
         return categoryService.findAllCategories(user_id);
+    }
+
+    @GetMapping
+    public ApiResponse<CategoryListDto> findCategoriesByDate(
+            @RequestParam("user") Long user_id,
+            @RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate selected_date) {
+        return categoryService.findCategoriesByDate(user_id, selected_date);
     }
 
     @PutMapping("/{category_id}")
