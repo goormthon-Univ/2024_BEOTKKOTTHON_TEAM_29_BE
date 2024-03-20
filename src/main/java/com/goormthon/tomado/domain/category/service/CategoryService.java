@@ -54,7 +54,7 @@ public class CategoryService {
     }
 
     public ApiResponse<SimpleResponse> updateCategory(Long category_id, CategoryUpdateDto.Request request) {
-        Category category =  getCategoryByCategoryId(category_id);
+        Category category =  getCategory(category_id, request.getUser_id());
         User user = getUserByUserId(request.getUser_id());
 
         if (!category.getTitle().equals(request.getTitle())) {
@@ -69,8 +69,8 @@ public class CategoryService {
         }
     }
 
-    public ApiResponse deleteCategory(Long category_id) {
-        Category category =  getCategoryByCategoryId(category_id);
+    public ApiResponse deleteCategory(Long category_id, Long user_id) {
+        Category category =  getCategory(category_id, user_id);
 
         if (category.getTomato() == 0) {
             categoryRepository.delete(category);
@@ -86,8 +86,8 @@ public class CategoryService {
         return user;
     }
 
-    private Category getCategoryByCategoryId(Long categoryId) {
-        Category category =  categoryRepository.findById(categoryId)
+    private Category getCategory(Long categoryId, Long userId) {
+        Category category =  categoryRepository.findByIdAndUser_Id(categoryId, userId)
                 .orElseThrow(() -> new NotFoundException(CATEGORY_NOT_EXIST));
         return category;
     }
