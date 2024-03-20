@@ -91,7 +91,7 @@ public class CategoryService {
     }
 
     private Category getCategory(Long categoryId, Long userId) {
-        Category category =  categoryRepository.findByIdAndUser_Id(categoryId, userId)
+        Category category =  categoryRepository.findByIdAndUserId(categoryId, userId)
                 .orElseThrow(() -> new NotFoundException(CATEGORY_NOT_EXIST));
         return category;
     }
