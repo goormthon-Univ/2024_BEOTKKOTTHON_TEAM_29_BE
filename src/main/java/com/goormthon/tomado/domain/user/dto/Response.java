@@ -4,20 +4,19 @@ import com.goormthon.tomado.domain.user.entity.User;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class UserResponseDto {
-    
-    private Long user_id;
+@RequiredArgsConstructor(access = AccessLevel.PROTECTED)
+public class Response {
+
     private String login_id;
     private String password;
     private String nickname;
     private String character_url;
-    private Long tomato;
+    private int tomato;
 
-    private UserResponseDto(Long user_id, String login_id, String password, String nickname, String character_url, Long tomato) {
-        this.user_id = user_id;
+    private Response(String login_id, String password, String nickname, String character_url, int tomato) {
         this.login_id = login_id;
         this.password = password;
         this.nickname = nickname;
@@ -25,8 +24,8 @@ public class UserResponseDto {
         this.tomato = tomato;
     }
 
-    public UserResponseDto from(User user) {
-        return new UserResponseDto(user.getId(), getLogin_id(), getPassword(), getNickname(), getCharacter_url(), getTomato());
+    public static Response from(User user) {
+        return new Response(user.getLoginId(), user.getPassword(), user.getNickname(), user.getCharacterUrl(), user.getTomato());
     }
-    
+
 }
