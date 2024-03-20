@@ -57,7 +57,9 @@ public class CategoryService {
         Category category =  getCategoryByCategoryId(category_id);
         User user = getUserByUserId(request.getUser_id());
 
-        handleDuplicateTitleException(user, request.getTitle());
+        if (!category.getTitle().equals(request.getTitle())) {
+            handleDuplicateTitleException(user, request.getTitle());
+        }
 
         try {
             Category categoryUpdated = categoryRepository.save(category.update(request));
