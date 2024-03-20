@@ -48,7 +48,7 @@ public class User {
     @JsonManagedReference
     private final List<UserTomado> userTomadoList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "user", orphanRemoval = true)
     @JsonManagedReference
     private final List<Memo> memoList = new ArrayList<>();
 
