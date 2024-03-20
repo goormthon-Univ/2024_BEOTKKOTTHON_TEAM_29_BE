@@ -4,9 +4,11 @@ import com.goormthon.tomado.common.ApiResponse;
 import com.goormthon.tomado.common.exception.NotFoundException;
 import com.goormthon.tomado.domain.category.entity.Category;
 import com.goormthon.tomado.domain.category.repository.CategoryRepository;
+
 import com.goormthon.tomado.domain.task.dto.SaveTomaRequest;
 import com.goormthon.tomado.domain.task.dto.TomaCount;
 import com.goormthon.tomado.domain.task.dto.TomaCountListResponse;
+
 import com.goormthon.tomado.domain.task.dto.TaskCreateDto;
 import com.goormthon.tomado.domain.task.entity.Task;
 import com.goormthon.tomado.domain.task.repository.TaskRepository;
@@ -16,12 +18,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+
 import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+
 
 import static com.goormthon.tomado.common.response.ErrorMessage.*;
 import static com.goormthon.tomado.common.response.SuccessMessage.*;
@@ -87,4 +91,5 @@ public class TaskService {
                 .sorted(Comparator.comparing(TomaCount::getDate))
                 .collect(Collectors.toList());
     }
+
 }

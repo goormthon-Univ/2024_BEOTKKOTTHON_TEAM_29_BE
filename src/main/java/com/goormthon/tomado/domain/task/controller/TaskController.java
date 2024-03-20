@@ -1,6 +1,7 @@
 package com.goormthon.tomado.domain.task.controller;
 
 import com.goormthon.tomado.common.ApiResponse;
+
 import com.goormthon.tomado.domain.task.dto.SaveTomaRequest;
 import com.goormthon.tomado.domain.task.dto.TaskCreateDto;
 import com.goormthon.tomado.domain.task.dto.TomaCountListResponse;
@@ -29,4 +30,5 @@ public class TaskController {
     public ApiResponse<TomaCountListResponse> getTomaCountByMonth(@RequestParam("user") Long user_id, @RequestParam("month") int month) {
         return taskService.getTomaCountByMonth(user_id, month);
     }
+
 }
