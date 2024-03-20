@@ -65,7 +65,7 @@ public class CategoryService {
             Category categoryUpdated = categoryRepository.save(category.update(request));
             return ApiResponse.success(CATEGORY_UPDATE_SUCCESS, CategoryUpdateDto.from(categoryUpdated));
         } catch (DataIntegrityViolationException e) {
-            throw new BadRequestException(CATEGORY_NOT_EXIST);
+            throw new NotFoundException(CATEGORY_NOT_EXIST);
         }
     }
 
