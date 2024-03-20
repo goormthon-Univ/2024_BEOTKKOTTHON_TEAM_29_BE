@@ -3,16 +3,14 @@ package com.goormthon.tomado.domain.user.service;
 import com.goormthon.tomado.common.ApiResponse;
 import com.goormthon.tomado.common.exception.BadRequestException;
 import com.goormthon.tomado.common.exception.NotFoundException;
-import com.goormthon.tomado.domain.user.dto.UserChangeDto;
-import com.goormthon.tomado.domain.user.dto.UserInfoDto;
-import com.goormthon.tomado.domain.user.dto.UserLoginDto;
-import com.goormthon.tomado.domain.user.dto.UserSignUpDto;
+import com.goormthon.tomado.domain.user.dto.*;
 import com.goormthon.tomado.domain.user.entity.User;
 import com.goormthon.tomado.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import static com.goormthon.tomado.common.response.ErrorMessage.*;
 import static com.goormthon.tomado.common.response.SuccessMessage.*;
@@ -24,7 +22,8 @@ public class UserService {
     final private UserRepository userRepository;
     final private PasswordEncoder passwordEncoder;
 
-    public ApiResponse<UserSignUpDto.Response> signUp(UserSignUpDto.Request request) {
+    @Transactional
+    public ApiResponse<SimpleResponse> signUp(SignUpRequest request) {
 
         User user = new User(request.getLogin_id(), passwordEncoder.encode(request.getPassword()), request.getNickname());
         try {
@@ -32,7 +31,7 @@ public class UserService {
         } catch (DataIntegrityViolationException exception) {
             throw new BadRequestException(USER_LOGIN_ID_VALIDATE);
         }
-        return ApiResponse.success(USER_SIGNUP_SUCCESS, UserSignUpDto.from(user));
+        return ApiResponse.success(USER_SIGNUP_SUCCESS, new SimpleResponse(user.getId()));
 
     }
 
@@ -40,19 +39,21 @@ public class UserService {
         return ApiResponse.success(LOGIN_ID_VALIDATE_SUCCESS, userRepository.findByLoginId(loginId).isPresent());
     }
 
-    public ApiResponse<UserLoginDto.Response> login(UserLoginDto.Request request) {
+    @Transactional
+    public ApiResponse<SimpleResponse> login(LoginRequest request) {
 
         User user = userRepository.findByLoginId(request.getLogin_id())
                 .orElseThrow(() -> new NotFoundException(USER_LOGIN_ID_NOT_EXIST));
 
         if (passwordEncoder.matches(request.getPassword(), user.getPassword())) {
-            return ApiResponse.success(USER_LOGIN_SUCCESS, UserLoginDto.from(user.getId()));
+            return ApiResponse.success(USER_LOGIN_SUCCESS, new SimpleResponse(user.getId()));
         } else {
             throw new NotFoundException(USER_PASSWORD_NOT_EXIST);
         }
     }
 
-    public ApiResponse<UserChangeDto.Response> change(Long user_id, UserChangeDto.Request request) {
+    @Transactional
+    public ApiResponse<SimpleResponse> change(Long user_id, ChangeRequest request) {
 
         User user = userRepository.findById(user_id)
                 .orElseThrow(() -> new NotFoundException(USER_NOT_EXIST));
@@ -60,19 +61,21 @@ public class UserService {
 
         try {
             User userChanged = userRepository.save(user.change(request));
-            return ApiResponse.success(USER_INFO_CHANGE_SUCCESS, UserChangeDto.from(userChanged));
+            return ApiResponse.success(USER_INFO_CHANGE_SUCCESS, new SimpleResponse(userChanged.getId()));
         } catch (DataIntegrityViolationException exception) {
             throw new BadRequestException(USER_LOGIN_ID_VALIDATE);
         }
 
     }
 
-    public ApiResponse<UserInfoDto> findById(Long userId) {
+    @Transactional(readOnly = true)
+    public ApiResponse<Response> findById(Long userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException(USER_NOT_EXIST));
-        return ApiResponse.success(USER_INFO_FIND_SUCCESS, UserInfoDto.from(user));
+        return ApiResponse.success(USER_INFO_FIND_SUCCESS, Response.from(user));
     }
 
+    @Transactional
     public ApiResponse withdraw(Long userId) {
         User user = userRepository.findById(userId).orElseThrow(() -> new NotFoundException(USER_NOT_EXIST));
         userRepository.delete(user);
