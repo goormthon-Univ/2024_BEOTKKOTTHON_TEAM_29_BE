@@ -1,10 +1,7 @@
 package com.goormthon.tomado.domain.category.controller;
 
 import com.goormthon.tomado.common.ApiResponse;
-import com.goormthon.tomado.domain.category.dto.CategoryCreateDto;
-import com.goormthon.tomado.domain.category.dto.CategoryDto;
-import com.goormthon.tomado.domain.category.dto.CategoryListDto;
-import com.goormthon.tomado.domain.category.dto.CategoryUpdateDto;
+import com.goormthon.tomado.domain.category.dto.*;
 import com.goormthon.tomado.domain.category.service.CategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -30,14 +27,14 @@ public class CategoryController {
     }
 
     @GetMapping
-    public ApiResponse<CategoryListDto> findCategoriesByDate(
+    public ApiResponse<CategoryListByDateDto> findCategoriesByDate(
             @RequestParam("user") Long user_id,
             @RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate selected_date) {
         return categoryService.findCategoriesByDate(user_id, selected_date);
     }
 
     @PutMapping("/{category_id}")
-    public ApiResponse<CategoryDto> updateCategory(@PathVariable(name = "category_id") Long category_id, @RequestBody CategoryUpdateDto.Request request) {
+    public ApiResponse<SimpleResponse> updateCategory(@PathVariable(name = "category_id") Long category_id, @RequestBody CategoryUpdateDto.Request request) {
         return categoryService.updateCategory(category_id, request);
     }
 

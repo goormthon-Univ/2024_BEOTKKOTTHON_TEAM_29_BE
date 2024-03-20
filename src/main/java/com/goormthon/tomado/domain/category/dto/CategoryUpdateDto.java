@@ -12,19 +12,19 @@ public class CategoryUpdateDto {
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
     public static class Request {
 
-        private String login_id;
+        private Long user_id;
         private String title;
         private ColorType color;
 
-        private Request(String login_id, String title, ColorType color) {
-            this.login_id = login_id;
+        private Request(Long user_id, String title, ColorType color) {
+            this.user_id = user_id;
             this.title = title;
             this.color = color;
         }
     }
 
     // Response
-    public static CategoryDto from(Category category) {
-        return new CategoryDto(category.getTitle(), category.getColor(), category.getTomato());
+    public static SimpleResponse from(Category category) {
+        return new SimpleResponse(category.getTitle(), category.getColor(), category.getTomato());
     }
 }

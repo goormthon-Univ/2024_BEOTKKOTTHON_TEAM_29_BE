@@ -3,11 +3,7 @@ package com.goormthon.tomado.domain.category.service;
 import com.goormthon.tomado.common.ApiResponse;
 import com.goormthon.tomado.common.exception.BadRequestException;
 import com.goormthon.tomado.common.exception.NotFoundException;
-import com.goormthon.tomado.common.response.ErrorMessage;
-import com.goormthon.tomado.domain.category.dto.CategoryCreateDto;
-import com.goormthon.tomado.domain.category.dto.CategoryDto;
-import com.goormthon.tomado.domain.category.dto.CategoryListDto;
-import com.goormthon.tomado.domain.category.dto.CategoryUpdateDto;
+import com.goormthon.tomado.domain.category.dto.*;
 import com.goormthon.tomado.domain.category.entity.Category;
 import com.goormthon.tomado.domain.category.repository.CategoryRepository;
 import com.goormthon.tomado.domain.task.entity.Task;
@@ -35,7 +31,7 @@ public class CategoryService {
     final private TaskRepository taskRepository;
 
     public ApiResponse<CategoryCreateDto.Response> createCategory(CategoryCreateDto.Request request) {
-        User user = getUserByLoginId(request.getLogin_id());
+        User user = getUserByUserId(request.getUser_id());
         handleDuplicateTitleException(user, request.getTitle());
 
         Category category = new Category(user, request.getTitle(), request.getColor());
@@ -47,19 +43,19 @@ public class CategoryService {
     public ApiResponse<CategoryListDto> findAllCategories(Long user_id) {
         User user = getUserByUserId(user_id);
 
-        return ApiResponse.success(CATEGORY_LIST_FETCH_SUCCESS, CategoryListDto.fromAll(user.getCategoryList()));
+        return ApiResponse.success(CATEGORY_LIST_FETCH_SUCCESS, CategoryListDto.from(user.getCategoryList()));
     }
 
-    public ApiResponse<CategoryListDto> findCategoriesByDate(Long user_id, LocalDate selected_date) {
+    public ApiResponse<CategoryListByDateDto> findCategoriesByDate(Long user_id, LocalDate selected_date) {
         User user = getUserByUserId(user_id);
         List<Task> taskList = taskRepository.findByUserAndDate(user, selected_date);
 
-        return ApiResponse.success(CATEGORY_LIST_FETCH_SUCCESS, CategoryListDto.fromCategoriesByDate(taskList));
+        return ApiResponse.success(CATEGORY_LIST_FETCH_SUCCESS, CategoryListByDateDto.fromCategoriesByDate(taskList));
     }
 
-    public ApiResponse<CategoryDto> updateCategory(Long category_id, CategoryUpdateDto.Request request) {
+    public ApiResponse<SimpleResponse> updateCategory(Long category_id, CategoryUpdateDto.Request request) {
         Category category =  getCategoryByCategoryId(category_id);
-        User user = getUserByLoginId(request.getLogin_id());
+        User user = getUserByUserId(request.getUser_id());
 
         handleDuplicateTitleException(user, request.getTitle());
 
@@ -80,12 +76,6 @@ public class CategoryService {
             categoryRepository.save(category.delete());
         }
         return ApiResponse.success(CATEGORY_DELETE_SUCCESS);
-    }
-
-    private User getUserByLoginId(String loinId) {
-        User user = userRepository.findByLoginId(loinId)
-                .orElseThrow(() -> new NotFoundException(USER_NOT_EXIST));
-        return user;
     }
 
     private User getUserByUserId(Long userId) {

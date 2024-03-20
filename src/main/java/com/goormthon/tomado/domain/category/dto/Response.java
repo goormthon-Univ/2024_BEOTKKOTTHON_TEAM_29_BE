@@ -7,13 +7,15 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class CategoryDto {
+public class Response {
 
+    private Long category_id;
     private String title;
     private ColorType color;
     private int tomato;
 
-    public CategoryDto(String title, ColorType color, int tomato) {
+    public Response(Long category_id, String title, ColorType color, int tomato) {
+        this.category_id = category_id;
         this.title = title;
         this.color = color;
         this.tomato = tomato;
