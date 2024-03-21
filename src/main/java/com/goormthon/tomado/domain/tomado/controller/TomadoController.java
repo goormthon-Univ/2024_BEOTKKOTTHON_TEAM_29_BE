@@ -19,7 +19,7 @@ public class TomadoController {
     }
 
     @GetMapping("")
-    public ApiResponse<TomadoDto.SimpleResponseList> findAvailableTomadoList(@RequestParam Long user) {
+    public ApiResponse<TomadoDto.ResponseList> findAvailableTomadoList(@RequestParam Long user) {
         return tomadoService.findAvailableTomadoList(user);
     }
 

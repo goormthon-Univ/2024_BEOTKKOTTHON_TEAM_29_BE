@@ -40,7 +40,7 @@ public class TomadoService {
     }
 
     @Transactional(readOnly = true)
-    public ApiResponse<TomadoDto.SimpleResponseList> findAvailableTomadoList(Long userId) {
+    public ApiResponse<TomadoDto.ResponseList> findAvailableTomadoList(Long userId) {
 
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException(USER_NOT_EXIST));
@@ -54,20 +54,22 @@ public class TomadoService {
 
         // 사용자가 보유한 토마두 캐릭터 id를 담을 리스트 : tomadoHaveList
         // 사용자가 보유하지 않은 토마두 캐릭터 id를 탐을 리스트 : tomadoNotHaveList
-        List<TomadoDto.SimpleResponse> tomadoHaveList = new ArrayList<>();
-        List<TomadoDto.SimpleResponse> tomadoNotHaveList = new ArrayList<>();
+        List<TomadoDto.Response> tomadoHaveList = new ArrayList<>();
+        List<TomadoDto.Response> tomadoNotHaveList = new ArrayList<>();
 
         // 사용자가 가지고 있는 캐릭터인지 아닌지 확인
         // 보유 -> tomadoHaveList에 add | 미보유 -> tomadoHaveNotList에 add
-        for (Long i = 0L; i < TOMADO_COUNT; i++) {  // TOMADO_COUNT는 관리자가 관리하기 때문에 상수로 지정
+        for (Long i = 1L; i <= TOMADO_COUNT; i++) {  // TOMADO_COUNT는 관리자가 관리하기 때문에 상수로 지정
             if (tomadoIdList.contains(i)) {
-                tomadoHaveList.add(new TomadoDto.SimpleResponse(i));
+                tomadoHaveList.add(TomadoDto.from(tomadoRepository.findById(i)
+                        .orElseThrow(() -> new NotFoundException(TOMADO_NOT_EXIST))));
             } else {
-                tomadoNotHaveList.add(new TomadoDto.SimpleResponse(i));
+                tomadoNotHaveList.add(TomadoDto.from(tomadoRepository.findById(i)
+                        .orElseThrow(() -> new NotFoundException(TOMADO_NOT_EXIST))));
             }
         }
 
-        return ApiResponse.success(SuccessMessage.TOMADO_FETCH_SUCCESS, new TomadoDto.SimpleResponseList(tomadoNotHaveList));
+        return ApiResponse.success(SuccessMessage.TOMADO_FETCH_SUCCESS, new TomadoDto.ResponseList(tomadoNotHaveList));
 
     }
 
