@@ -1,5 +1,6 @@
 package com.goormthon.tomado.domain.club.entity;
 
+import com.goormthon.tomado.domain.category.entity.Category;
 import com.goormthon.tomado.domain.user.entity.User;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -24,12 +25,14 @@ public class ClubMembers {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @Column
-    private int tomato = 0; // 토마토 초기값 : 0
+    @OneToOne
+    @JoinColumn(name = "category_id")
+    private Category category;
 
-    public ClubMembers(Club club, User user) {
+    public ClubMembers(Club club, User user, Category category) {
         this.club = club;
         this.user = user;
+        this.category = category;
     }
 
 }
