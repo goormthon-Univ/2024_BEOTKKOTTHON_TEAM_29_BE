@@ -3,14 +3,23 @@ package com.goormthon.tomado.domain.user.service;
 import com.goormthon.tomado.common.ApiResponse;
 import com.goormthon.tomado.common.exception.BadRequestException;
 import com.goormthon.tomado.common.exception.NotFoundException;
+import com.goormthon.tomado.domain.tomado.entity.Tomado;
+import com.goormthon.tomado.domain.tomado.repository.TomadoRepository;
 import com.goormthon.tomado.domain.user.dto.*;
 import com.goormthon.tomado.domain.user.entity.User;
+import com.goormthon.tomado.domain.user.entity.UserTomado;
 import com.goormthon.tomado.domain.user.repository.UserRepository;
+import com.goormthon.tomado.domain.user.repository.UserTomadoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.awt.print.Book;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 import static com.goormthon.tomado.common.response.ErrorMessage.*;
 import static com.goormthon.tomado.common.response.SuccessMessage.*;
@@ -21,6 +30,8 @@ public class UserService {
 
     final private UserRepository userRepository;
     final private PasswordEncoder passwordEncoder;
+    final private TomadoRepository tomadoRepository;
+    final private UserTomadoRepository userTomadoRepository;
 
     @Transactional
     public ApiResponse<SimpleResponse> signUp(SignUpRequest request) {
@@ -80,6 +91,35 @@ public class UserService {
         User user = userRepository.findById(userId).orElseThrow(() -> new NotFoundException(USER_NOT_EXIST));
         userRepository.delete(user);
         return ApiResponse.success(USER_WITHDRAW_SUCCESS);
+    }
+
+    public ApiResponse<List<BookResponse.Simple>> getBook(Long userId) {
+        // 회원 정보 확인
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundException(USER_NOT_EXIST));
+
+        // 회원이 보유한 토마두 가져오기
+        ArrayList<BookResponse.Simple> simpleResponseList = new ArrayList<BookResponse.Simple>();
+        for (UserTomado userTomado : user.getUserTomadoList()) {
+            simpleResponseList.add(BookResponse.Simple.from(userTomado));
+        }
+
+        return ApiResponse.success(BOOK_FETCH_SUCCESS, simpleResponseList);
+    }
+
+    public ApiResponse<BookResponse.Detailed> getTomadoInfoOfBook(Long userId, Long tomadoId) {
+        // 회원 정보 확인
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundException(USER_NOT_EXIST));
+
+        // 토마두 정보 확인
+        Tomado tomado = tomadoRepository.findById(tomadoId).orElseThrow(() -> new NotFoundException(TOMADO_NOT_EXIST));
+
+        // 유저가 보유한 토마두 정보인지 확인
+        UserTomado userTomado = userTomadoRepository.findByUserIdAndTomadoId(user.getId(), tomado.getId())
+                .orElseThrow(() -> new BadRequestException(USER_NOT_HAVE_TOMADO));
+
+        return ApiResponse.success(TOMADO_FETCH_SUCCESS, BookResponse.Detailed.from(userTomado));
     }
 
 }
