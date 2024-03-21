@@ -69,6 +69,11 @@ public class Category {
         return this;
     }
 
+    public Category checkClub() {
+        this.isClub = true;
+        return this;
+    }
+
     public Category addToma(int toma) {
         this.tomato += toma;
         return this;

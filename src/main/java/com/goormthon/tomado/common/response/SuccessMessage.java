@@ -31,7 +31,9 @@ public enum SuccessMessage {
     TASK_TOMA_LIST_FETCH_SUCCESS(OK, "월별 토마 개수 조회 성공"),
 
     TOMADO_FETCH_SUCCESS(OK, "캐릭터 조회 성공"),
-    TOMADO_BUY_SUCCESS(OK, "캐릭터 구입 성공")
+    TOMADO_BUY_SUCCESS(OK, "캐릭터 구입 성공"),
+
+    CLUB_CREATE_SUCCESS(CREATED, "클럽 생성 성공")
     ;
 
     private final HttpStatus httpStatus;

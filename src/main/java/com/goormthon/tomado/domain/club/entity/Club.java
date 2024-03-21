@@ -1,10 +1,12 @@
 package com.goormthon.tomado.domain.club.entity;
 
+import com.goormthon.tomado.domain.category.entity.ColorType;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.joda.time.LocalDate;
+
+import java.time.LocalDate;
 
 @Entity
 @Getter
@@ -17,6 +19,10 @@ public class Club {
 
     @Column(nullable = false)
     private String title;
+
+    @Column
+    @Enumerated(value = EnumType.STRING)
+    private ColorType color;
 
     @Column(nullable = false)
     private int memberNumber;
@@ -42,12 +48,12 @@ public class Club {
     @Column
     private boolean isCompleted = false; // 완료 초기값 : false
 
-    public Club(String title, int memberNumber, int goal, String memo, String url, LocalDate startDate, LocalDate endDate) {
+    public Club(String title, ColorType color, int memberNumber, int goal, String memo, LocalDate startDate, LocalDate endDate) {
         this.title = title;
+        this.color = color;
         this.memberNumber = memberNumber;
         this.goal = goal;
         this.memo = memo;
-        this.url = url;
         this.startDate = startDate;
         this.endDate = endDate;
     }
