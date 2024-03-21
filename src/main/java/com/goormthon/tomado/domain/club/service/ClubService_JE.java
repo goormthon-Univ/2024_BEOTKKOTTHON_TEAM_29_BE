@@ -51,13 +51,18 @@ public class ClubService_JE {
         }
 
         // club에 있는 member 정보 저장
+        List<ClubGetDto.ClubMember> clubMemberList = getClubMemberList(club);
+
+        return ApiResponse.success(CLUB_FETCH_SUCCESS, ClubGetDto.Response.from(club, clubMemberList));
+
+    }
+
+    private List<ClubGetDto.ClubMember> getClubMemberList(Club club) {
         List<ClubGetDto.ClubMember> clubMemberList = new ArrayList<>();
         for (ClubMembers member : club.getClubMembersList()) {
             clubMemberList.add(ClubGetDto.ClubMember.from(member.getUser()));
         }
-
-        return ApiResponse.success(CLUB_FETCH_SUCCESS, ClubGetDto.Response.from(club, clubMemberList));
-
+        return clubMemberList;
     }
 
     private User getUserByUserId(Long userId) {
