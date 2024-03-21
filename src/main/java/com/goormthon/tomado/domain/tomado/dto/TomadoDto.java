@@ -28,21 +28,10 @@ public class TomadoDto {
 
     @Getter
     @NoArgsConstructor
-    public static class SimpleResponse {
-        private Long tomado_id;
+    public static class ResponseList {
+        private List<Response> tomadoList;
 
-        public SimpleResponse(Long tomado_id) {
-            this.tomado_id = tomado_id;
-        }
-
-    }
-
-    @Getter
-    @NoArgsConstructor
-    public static class SimpleResponseList {
-        private List<SimpleResponse> tomadoList;
-
-        public SimpleResponseList(List<SimpleResponse> tomadoList) {
+        public ResponseList(List<Response> tomadoList) {
             this.tomadoList = tomadoList;
         }
     }
