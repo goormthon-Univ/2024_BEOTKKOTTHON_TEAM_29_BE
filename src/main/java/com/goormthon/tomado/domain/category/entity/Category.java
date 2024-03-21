@@ -7,6 +7,7 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +37,10 @@ public class Category {
 
     @Column
     private boolean isDeleted;
+
+    @Column(nullable = false)
+    @ColumnDefault("false")
+    private boolean isClub;
 
     @OneToMany(mappedBy = "category")
     private final List<Task> taskList = new ArrayList<>();
