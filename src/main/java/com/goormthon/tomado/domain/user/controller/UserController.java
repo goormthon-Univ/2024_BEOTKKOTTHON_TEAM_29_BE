@@ -9,6 +9,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 public class UserController {
@@ -55,6 +57,12 @@ public class UserController {
     @DeleteMapping("/users/{user_id}")
     public ApiResponse withdraw(@PathVariable Long user_id) {
         return userService.withdraw(user_id);
+    }
+
+    @Operation(summary = "토마 도감 보기 - 얻은 토마두 전체 보기")
+    @GetMapping("/book/users/{user_id}/tomados")
+    public ApiResponse<List<BookResponse.Simple>> getBook(@PathVariable(name = "user_id") Long user_id) {
+        return userService.getBook(user_id);
     }
 
 }
