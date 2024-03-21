@@ -1,6 +1,8 @@
 package com.goormthon.tomado.domain.user.controller;
 
 import com.goormthon.tomado.common.ApiResponse;
+import com.goormthon.tomado.common.exception.NotFoundException;
+import com.goormthon.tomado.common.response.ErrorMessage;
 import com.goormthon.tomado.domain.user.dto.*;
 import com.goormthon.tomado.domain.user.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -63,6 +65,12 @@ public class UserController {
     @GetMapping("/book/users/{user_id}/tomados")
     public ApiResponse<List<BookResponse.Simple>> getBook(@PathVariable(name = "user_id") Long user_id) {
         return userService.getBook(user_id);
+    }
+
+    @Operation(summary = "토마 도감 보기 - 얻은 토마두 개별 보기")
+    @GetMapping("/book")
+    public ApiResponse<BookResponse.Detailed> getTomadoInfoOfBook(@RequestParam(name = "user") Long user_id, @RequestParam(name = "tomado") Long tomado_id) {
+        return userService.getTomadoInfoOfBook(user_id, tomado_id);
     }
 
 }

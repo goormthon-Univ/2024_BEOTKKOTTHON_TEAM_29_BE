@@ -26,7 +26,8 @@ public enum ErrorMessage {
 
     TOMADO_NOT_EXIST(NOT_FOUND, "존재하지 않는 토마두 캐릭터"),
     USER_TOMATO_NOT_ENOUGH(BAD_REQUEST, "회원의 토마량 보유 부족"),
-    USER_TOMADO_ALREADY_EXIST(BAD_REQUEST, "이미 보유한 토마두")
+    USER_TOMADO_ALREADY_EXIST(BAD_REQUEST, "이미 보유한 토마두"),
+    USER_NOT_HAVE_TOMADO(BAD_REQUEST, "회원이 가진 토마두가 아닙니다")
     ;
 
     private final HttpStatus httpStatus;
