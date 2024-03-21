@@ -26,6 +26,11 @@ public class CategoryController {
         return categoryService.findAllCategories(user_id);
     }
 
+    @GetMapping("club/{user_id}")
+    public ApiResponse<CategoryListDto> findAllClubCategories(@PathVariable(name = "user_id") Long user_id) {
+        return categoryService.findAllClubCategories(user_id);
+    }
+
     @GetMapping
     public ApiResponse<CategoryListByDateDto> findCategoriesByDate(
             @RequestParam("user") Long user_id,
