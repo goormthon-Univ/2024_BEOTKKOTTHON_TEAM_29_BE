@@ -23,6 +23,7 @@ public enum ErrorMessage {
     USER_NOT_HAVE_MEMO(BAD_REQUEST, "회원이 가진 메모가 아닙니다"),
   
     TASK_NOT_EXIST(NOT_FOUND, "존재하지 않는 Task"),
+    TASK_MODE_INVALID(BAD_REQUEST, "MODE 값이 잘못되었습니다."),
 
     TOMADO_NOT_EXIST(NOT_FOUND, "존재하지 않는 토마두 캐릭터"),
     USER_TOMATO_NOT_ENOUGH(BAD_REQUEST, "회원의 토마량 보유 부족"),

@@ -76,4 +76,15 @@ public class Club {
 
         return this;
     }
+
+    public Club addToma(int toma) {
+        currentAmount += toma;
+        currentAmount = currentAmount >= goal ? goal : currentAmount;
+        return this;
+    }
+
+    public Club complete() {
+        this.isCompleted = true;
+        return this;
+    }
 }
