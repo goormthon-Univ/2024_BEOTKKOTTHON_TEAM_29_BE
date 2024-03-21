@@ -3,7 +3,6 @@ package com.goormthon.tomado.domain.club.service;
 import com.goormthon.tomado.common.ApiResponse;
 import com.goormthon.tomado.common.exception.BadRequestException;
 import com.goormthon.tomado.common.exception.NotFoundException;
-import com.goormthon.tomado.common.response.ErrorMessage;
 import com.goormthon.tomado.domain.category.entity.Category;
 import com.goormthon.tomado.domain.category.repository.CategoryRepository;
 import com.goormthon.tomado.domain.club.dto.ClubCreateDto;
@@ -112,6 +111,7 @@ public class ClubService {
 
                 // 클럽의 리스트에서 해당 멤버 삭제
                 clubMembersList.remove(memberToDelete);
+                clubRepository.save(club);
                 // ClubMembers 삭제
                 clubMembersRepository.delete(memberToDelete);
             }
