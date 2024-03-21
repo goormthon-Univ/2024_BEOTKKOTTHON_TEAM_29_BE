@@ -22,11 +22,13 @@ public class ClubController_JE {
         return clubService.getClub(userId, clubId);
     }
 
+    @Operation(summary = "클럽 정보 조회 - 리스트")
     @GetMapping("/{user_id}")
     public ApiResponse<ClubGetDto.ResponseList> getClubList(@PathVariable(name = "user_id") Long userId) {
         return clubService.getClubList(userId);
     }
 
+    @Operation(summary = "클럽 가입")
     @PostMapping("/join")
     public ApiResponse joinClub(@RequestBody ClubDto.Join request) {
         return clubService.joinClub(request);
