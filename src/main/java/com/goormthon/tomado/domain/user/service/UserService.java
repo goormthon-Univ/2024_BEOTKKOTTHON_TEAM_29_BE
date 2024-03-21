@@ -1,5 +1,6 @@
 package com.goormthon.tomado.domain.user.service;
 
+import com.goormthon.tomado.TomadoApplication;
 import com.goormthon.tomado.common.ApiResponse;
 import com.goormthon.tomado.common.exception.BadRequestException;
 import com.goormthon.tomado.common.exception.NotFoundException;
@@ -38,7 +39,14 @@ public class UserService {
 
         User user = new User(request.getLogin_id(), passwordEncoder.encode(request.getPassword()), request.getNickname());
         try {
-            userRepository.save(user);
+            User userRegistered = userRepository.save(user);
+
+            // 기본 토마두 지급
+            UserTomado userTomado = userTomadoRepository.save(new UserTomado(userRegistered, tomadoRepository.findById(1L)
+                    .orElseThrow(() -> new NotFoundException(TOMADO_NOT_EXIST))));
+            userRegistered.getUserTomadoList().add(userTomado);
+            userRepository.save(userRegistered);
+
         } catch (DataIntegrityViolationException exception) {
             throw new BadRequestException(USER_LOGIN_ID_VALIDATE);
         }
