@@ -52,7 +52,7 @@ public class Club {
     @Column
     private boolean isCompleted = false; // 완료 초기값 : false
 
-    @OneToMany(mappedBy = "club")
+    @OneToMany(mappedBy = "club", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
     private final List<ClubMembers> clubMembersList = new ArrayList<>();
 

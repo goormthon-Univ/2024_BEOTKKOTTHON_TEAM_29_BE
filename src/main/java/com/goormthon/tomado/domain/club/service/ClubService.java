@@ -16,15 +16,13 @@ import com.goormthon.tomado.domain.club.repository.ClubRepository;
 import com.goormthon.tomado.domain.user.entity.User;
 import com.goormthon.tomado.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 import static com.goormthon.tomado.common.response.ErrorMessage.*;
-import static com.goormthon.tomado.common.response.SuccessMessage.CLUB_CREATE_SUCCESS;
-import static com.goormthon.tomado.common.response.SuccessMessage.CLUB_UPDATE_SUCCESS;
+import static com.goormthon.tomado.common.response.SuccessMessage.*;
 
 @Service
 @Transactional
@@ -62,14 +60,9 @@ public class ClubService {
 
     public ApiResponse<ClubCreateDto.Response> updateClub(ClubUpdateDto.Request request) {
         User user = getUserByUserId(request.getUser_id());
-        Club club = clubRepository.findById(request.getClub_id())
-                .orElseThrow(() -> new NotFoundException(CLUB_NOT_EXIST));
+        Club club = getClubByClubId(request.getClub_id());
 
-        // user가 club의 멤버인지 확인
-        boolean isMember = club.getClubMembersList().stream()
-                .anyMatch(clubMembers -> clubMembers.getUser().equals(user));
-
-        if (isMember) {
+        if (isClubMember(club, user)) {
             // 수정하려는 클럽의 정원 < 현재 클럽에 가입된 멤버 수
             if (request.getMember_number() < club.getClubMembersList().size()) {
                 throw new BadRequestException(CLUB_MEMBER_NUMBER_FULL);
@@ -94,9 +87,75 @@ public class ClubService {
         }
     }
 
+    public ApiResponse deleteClub(Long club_id, Long user_id) {
+        User user = getUserByUserId(user_id);
+        Club club = getClubByClubId(club_id);
+
+        if (isClubMember(club, user)) {
+            List<ClubMembers> clubMembersList = club.getClubMembersList();
+
+            // 클럽 멤버가 user 1명 & 클럽의 current_amount가 0 -> Club 삭제(연결된 ClubMembers, Category 같이 삭제)
+            if (clubMembersList.size() == 1 && club.getCurrentAmount() == 0) {
+                deleteAll(clubMembersList, club);
+            } else {
+                // ClubMembers만 삭제 (Club, Category 그대로)
+
+                ClubMembers memberToDelete = findMemberToDelete(clubMembersList, user);
+
+                // 카테고리의 tomato가 0이면 삭제
+                if (memberToDelete.getCategory().getTomato() == 0) {
+                    categoryRepository.delete(memberToDelete.getCategory());
+                } else {
+                    // 카테고리 isDeleted true로 변경
+                    categoryRepository.save(memberToDelete.getCategory().delete());
+                }
+
+                // 클럽의 리스트에서 해당 멤버 삭제
+                clubMembersList.remove(memberToDelete);
+                // ClubMembers 삭제
+                clubMembersRepository.delete(memberToDelete);
+            }
+        } else {
+            throw new BadRequestException(USER_NOT_CLUB_MEMBER);
+        }
+
+        return ApiResponse.success(CLUB_DELETE_SUCCESS);
+    }
+
     private User getUserByUserId(Long userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException(USER_NOT_EXIST));
         return user;
+    }
+
+    private Club getClubByClubId(Long clubId) {
+        Club club = clubRepository.findById(clubId)
+                .orElseThrow(() -> new NotFoundException(CLUB_NOT_EXIST));
+        return club;
+    }
+
+    private boolean isClubMember(Club club, User user) {
+        return club.getClubMembersList().stream()
+                .anyMatch(clubMembers -> clubMembers.getUser().equals(user));
+    }
+
+    private void deleteAll(List<ClubMembers> clubMembersList, Club club) {
+        // Category 삭제
+        Category category = clubMembersList.get(0).getCategory();
+        categoryRepository.delete(category);
+
+        // Club 삭제 -> ClubMembers 삭제
+        clubRepository.delete(club);
+    }
+
+    private ClubMembers findMemberToDelete(List<ClubMembers> clubMembersList, User user) {
+        ClubMembers member = null;
+        for (ClubMembers clubMembers : clubMembersList) {
+            if (clubMembers.getUser().equals(user)) {
+                member = clubMembers;
+                break;
+            }
+        }
+        return member;
     }
 }

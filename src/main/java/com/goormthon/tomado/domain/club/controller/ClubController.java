@@ -23,4 +23,9 @@ public class ClubController {
     public ApiResponse<ClubCreateDto.Response> updateClub(@RequestBody ClubUpdateDto.Request request) {
         return clubService.updateClub(request);
     }
+
+    @DeleteMapping
+    public ApiResponse deleteClub(@RequestParam(name = "club") Long club_id, @RequestParam(name = "user") Long user_id) {
+        return clubService.deleteClub(club_id, user_id);
+    }
 }
