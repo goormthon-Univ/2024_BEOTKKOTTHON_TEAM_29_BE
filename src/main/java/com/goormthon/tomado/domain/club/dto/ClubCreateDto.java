@@ -37,6 +37,7 @@ public class ClubCreateDto {
     @Getter
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
     public static class Response {
+        private Long club_id;
         private String title;
         private ColorType color;
         private int current_amount;
@@ -46,7 +47,8 @@ public class ClubCreateDto {
         private LocalDate start_date;
         private LocalDate end_date;
 
-        private Response(String title, ColorType color, int current_amount, int member_number, int goal, String memo, LocalDate start_date, LocalDate end_date) {
+        private Response(Long club_id, String title, ColorType color, int current_amount, int member_number, int goal, String memo, LocalDate start_date, LocalDate end_date) {
+            this.club_id = club_id;
             this.title = title;
             this.color = color;
             this.current_amount = current_amount;
@@ -59,6 +61,6 @@ public class ClubCreateDto {
     }
 
     public static Response from(Club club) {
-        return new Response(club.getTitle(), club.getColor(), club.getCurrentAmount(), club.getMemberNumber(), club.getGoal(), club.getMemo(), club.getStartDate(), club.getEndDate());
+        return new Response(club.getId(), club.getTitle(), club.getColor(), club.getCurrentAmount(), club.getMemberNumber(), club.getGoal(), club.getMemo(), club.getStartDate(), club.getEndDate());
     }
 }
