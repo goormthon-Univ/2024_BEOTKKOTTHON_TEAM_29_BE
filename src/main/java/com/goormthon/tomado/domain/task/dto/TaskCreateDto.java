@@ -34,6 +34,7 @@ public class TaskCreateDto {
 
         public Response(Long task_id, String title) {
             this.task_id = task_id;
+            this.title = title;
         }
     }
 

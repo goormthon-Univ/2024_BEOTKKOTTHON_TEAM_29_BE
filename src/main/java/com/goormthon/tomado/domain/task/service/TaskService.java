@@ -1,10 +1,13 @@
 package com.goormthon.tomado.domain.task.service;
 
 import com.goormthon.tomado.common.ApiResponse;
+import com.goormthon.tomado.common.exception.BadRequestException;
 import com.goormthon.tomado.common.exception.NotFoundException;
 import com.goormthon.tomado.domain.category.entity.Category;
 import com.goormthon.tomado.domain.category.repository.CategoryRepository;
 
+import com.goormthon.tomado.domain.club.entity.Club;
+import com.goormthon.tomado.domain.club.repository.ClubRepository;
 import com.goormthon.tomado.domain.task.dto.SaveTomaRequest;
 import com.goormthon.tomado.domain.task.dto.TomaCount;
 import com.goormthon.tomado.domain.task.dto.TomaCountListResponse;
@@ -38,6 +41,7 @@ public class TaskService {
     private final TaskRepository taskRepository;
     private final UserRepository userRepository;
     private final CategoryRepository categoryRepository;
+    private final ClubRepository clubRepository;
 
     public ApiResponse<TaskCreateDto.Response> createTask(TaskCreateDto.Request request) {
         User user = userRepository.findById(request.getUser_id())
@@ -57,6 +61,9 @@ public class TaskService {
         Category category = task.getCategory();
         User user = task.getUser();
 
+        if (request.getMode() != 0 && request.getMode() != 1) {
+            throw new BadRequestException(TASK_MODE_INVALID);
+        }
         int toma = request.getMode() == 0 ? 1 : 3;
 
         if (!request.getCreated_at().toLocalDate().isEqual(task.getCreatedAt().toLocalDate())) {
@@ -67,6 +74,18 @@ public class TaskService {
         taskRepository.save(task.addToma(toma));
         categoryRepository.save(category.addToma(toma));
         userRepository.save(user.addToma(toma));
+
+        // 클럽
+        if (category.isClub()) {
+            Club club = category.getClubMembers().getClub();
+            clubRepository.save(club.addToma(toma));
+
+            // 목표량 달성 확인
+            if (club.getCurrentAmount() == club.getGoal()) {
+                clubRepository.save(club.complete());
+                return ApiResponse.success(CLUB_COMPLETED);
+            }
+        }
 
         return ApiResponse.success(TOMA_SAVE_SUCCESS);
     }

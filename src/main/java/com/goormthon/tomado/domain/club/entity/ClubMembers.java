@@ -29,7 +29,8 @@ public class ClubMembers {
     @JoinColumn(name = "category_id")
     private Category category;
 
-    public ClubMembers(Club club, User user, Category category) {
+    public ClubMembers(ClubMembersId id, Club club, User user, Category category) {
+        this.id = id;
         this.club = club;
         this.user = user;
         this.category = category;

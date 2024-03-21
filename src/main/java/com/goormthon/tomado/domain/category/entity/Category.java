@@ -55,17 +55,22 @@ public class Category {
         this.color = color;
     }
 
-    public Category update(CategoryUpdateDto.Request request) {
-        if (request.getTitle() != null) {
-            this.title = request.getTitle();
+    public Category update(String title, ColorType color) {
+        if (title != null) {
+            this.title = title;
         }
-        this.color = request.getColor();
+        this.color = color;
 
         return this;
     }
 
     public Category delete() {
         this.isDeleted = true;
+        return this;
+    }
+
+    public Category checkClub() {
+        this.isClub = true;
         return this;
     }
 

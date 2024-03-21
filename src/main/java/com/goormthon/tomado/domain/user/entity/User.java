@@ -2,6 +2,7 @@ package com.goormthon.tomado.domain.user.entity;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.goormthon.tomado.domain.category.entity.Category;
+import com.goormthon.tomado.domain.club.entity.ClubMembers;
 import com.goormthon.tomado.domain.memo.entity.Memo;
 import com.goormthon.tomado.domain.task.entity.Task;
 import com.goormthon.tomado.domain.user.dto.ChangeRequest;
@@ -51,6 +52,10 @@ public class User {
     @OneToMany(mappedBy = "user", orphanRemoval = true)
     @JsonManagedReference
     private final List<Memo> memoList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user")
+    @JsonManagedReference
+    private final List<ClubMembers> clubList = new ArrayList<>();
 
     public User(String loginId, String password, String nickname) {
         this.loginId = loginId;

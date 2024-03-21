@@ -23,11 +23,19 @@ public enum ErrorMessage {
     USER_NOT_HAVE_MEMO(BAD_REQUEST, "회원이 가진 메모가 아닙니다"),
   
     TASK_NOT_EXIST(NOT_FOUND, "존재하지 않는 Task"),
+    TASK_MODE_INVALID(BAD_REQUEST, "MODE 값이 잘못되었습니다."),
 
     TOMADO_NOT_EXIST(NOT_FOUND, "존재하지 않는 토마두 캐릭터"),
     USER_TOMATO_NOT_ENOUGH(BAD_REQUEST, "회원의 토마량 보유 부족"),
     USER_TOMADO_ALREADY_EXIST(BAD_REQUEST, "이미 보유한 토마두"),
-    USER_NOT_HAVE_TOMADO(BAD_REQUEST, "회원이 가진 토마두가 아닙니다")
+
+    USER_NOT_HAVE_TOMADO(BAD_REQUEST, "회원이 가진 토마두가 아닙니다"),
+  
+    CLUB_NOT_EXIST(NOT_FOUND, "존재하지 않는 클럽"),
+    USER_NOT_CLUB_MEMBER(BAD_REQUEST, "회원이 클럽 멤버가 아님"),
+    CLUB_MEMBER_NUMBER_FULL(BAD_REQUEST, "클럽 만원"),
+    USER_CLUB_ALREADY_EXIST(BAD_REQUEST, "이미 가입한 클럽"),
+    INVALID_GOAL(BAD_REQUEST, "올바르지 않은 목표량입니다.")
     ;
 
     private final HttpStatus httpStatus;
