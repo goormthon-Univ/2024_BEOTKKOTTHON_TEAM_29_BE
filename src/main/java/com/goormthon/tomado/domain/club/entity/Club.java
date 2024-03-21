@@ -1,5 +1,6 @@
 package com.goormthon.tomado.domain.club.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.goormthon.tomado.domain.category.entity.ColorType;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -7,6 +8,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -47,6 +50,10 @@ public class Club {
 
     @Column
     private boolean isCompleted = false; // 완료 초기값 : false
+
+    @OneToMany(mappedBy = "club")
+    @JsonManagedReference
+    private final List<ClubMembers> clubMembersList = new ArrayList<>();
 
     public Club(String title, ColorType color, int memberNumber, int goal, String memo, LocalDate startDate, LocalDate endDate) {
         this.title = title;

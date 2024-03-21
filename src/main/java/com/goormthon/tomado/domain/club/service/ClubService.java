@@ -46,8 +46,11 @@ public class ClubService {
         ClubMembersId clubMembersId = new ClubMembersId(club.getId(), user.getId());
         ClubMembers clubMembers = new ClubMembers(clubMembersId, club, user, category);
         clubMembersRepository.save(clubMembers);
+
         user.getClubList().add(clubMembers);
+        club.getClubMembersList().add(clubMembers);
         userRepository.save(user);
+        clubRepository.save(club);
 
         return ApiResponse.success(CLUB_CREATE_SUCCESS, ClubCreateDto.from(club));
     }
