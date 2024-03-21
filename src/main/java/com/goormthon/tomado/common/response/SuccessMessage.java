@@ -35,8 +35,10 @@ public enum SuccessMessage {
     BOOK_FETCH_SUCCESS(OK, "토마 도감 보기 성공"),
 
     CLUB_CREATE_SUCCESS(CREATED, "클럽 생성 성공"),
+
     CLUB_FETCH_SUCCESS(OK, "토마 클럽 조회 성공"),
-    CLUB_JOIN_SUCCESS(OK, "클럽 가입 성공")
+    CLUB_JOIN_SUCCESS(OK, "클럽 가입 성공"),
+    CLUB_UPDATE_SUCCESS(OK, "클럽 수정 성공")
     ;
 
     private final HttpStatus httpStatus;

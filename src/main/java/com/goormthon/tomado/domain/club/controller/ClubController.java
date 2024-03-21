@@ -2,12 +2,10 @@ package com.goormthon.tomado.domain.club.controller;
 
 import com.goormthon.tomado.common.ApiResponse;
 import com.goormthon.tomado.domain.club.dto.ClubCreateDto;
+import com.goormthon.tomado.domain.club.dto.ClubUpdateDto;
 import com.goormthon.tomado.domain.club.service.ClubService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -19,5 +17,10 @@ public class ClubController {
     @PostMapping
     public ApiResponse<ClubCreateDto.Response> createClub(@RequestBody ClubCreateDto.Request request) {
         return clubService.createClub(request);
+    }
+
+    @PutMapping
+    public ApiResponse<ClubCreateDto.Response> updateClub(@RequestBody ClubUpdateDto.Request request) {
+        return clubService.updateClub(request);
     }
 }

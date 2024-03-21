@@ -40,15 +40,17 @@ public class ClubCreateDto {
         private String title;
         private ColorType color;
         private int current_amount;
+        private int member_number;
         private int goal;
         private String memo;
         private LocalDate start_date;
         private LocalDate end_date;
 
-        private Response(String title, ColorType color, int current_amount, int goal, String memo, LocalDate start_date, LocalDate end_date) {
+        private Response(String title, ColorType color, int current_amount, int member_number, int goal, String memo, LocalDate start_date, LocalDate end_date) {
             this.title = title;
             this.color = color;
             this.current_amount = current_amount;
+            this.member_number = member_number;
             this.goal = goal;
             this.memo = memo;
             this.start_date = start_date;
@@ -57,6 +59,6 @@ public class ClubCreateDto {
     }
 
     public static Response from(Club club) {
-        return new Response(club.getTitle(), club.getColor(), club.getCurrentAmount(), club.getGoal(), club.getMemo(), club.getStartDate(), club.getEndDate());
+        return new Response(club.getTitle(), club.getColor(), club.getCurrentAmount(), club.getMemberNumber(), club.getGoal(), club.getMemo(), club.getStartDate(), club.getEndDate());
     }
 }
