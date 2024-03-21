@@ -1,6 +1,5 @@
 package com.goormthon.tomado.domain.user.repository;
 
-import com.goormthon.tomado.domain.tomado.entity.Tomado;
 import com.goormthon.tomado.domain.user.entity.UserTomado;
 import com.goormthon.tomado.domain.user.entity.UserTomadoId;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -12,4 +11,6 @@ import java.util.Optional;
 @Repository
 public interface UserTomadoRepository extends JpaRepository<UserTomado, UserTomadoId> {
     Optional<List<UserTomado>> findByUserId(Long userId);
+
+    Optional<UserTomado> findByUserIdAndTomadoId(Long userId, Long tomadoId);
 }
