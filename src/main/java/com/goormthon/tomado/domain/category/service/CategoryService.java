@@ -19,6 +19,7 @@ import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import static com.goormthon.tomado.common.response.ErrorMessage.*;
@@ -44,15 +45,11 @@ public class CategoryService {
     }
 
     public ApiResponse<CategoryListDto> findAllCategories(Long user_id) {
-        User user = getUserByUserId(user_id);
-        List<Category> categoryList = user.getCategoryList();
+        return findCategories(user_id, category -> !category.isClub());
+    }
 
-        List<Response> categoryDtoList = categoryList.stream()
-                .filter(category -> !category.isDeleted())
-                .map(category -> new Response(category.getId(), category.getTitle(), category.getColor(), category.getTomato()))
-                .collect(Collectors.toList());
-
-        return ApiResponse.success(CATEGORY_LIST_FETCH_SUCCESS, CategoryListDto.from(categoryDtoList));
+    public ApiResponse<CategoryListDto> findAllClubCategories(Long user_id) {
+        return findCategories(user_id, Category::isClub);
     }
 
     public ApiResponse<CategoryListByDateDto> findCategoriesByDate(Long user_id, LocalDate selected_date) {
@@ -102,6 +99,18 @@ public class CategoryService {
             categoryRepository.save(category.delete());
         }
         return ApiResponse.success(CATEGORY_DELETE_SUCCESS);
+    }
+
+    private ApiResponse<CategoryListDto> findCategories(Long user_id, Predicate<Category> predicate) {
+        User user = getUserByUserId(user_id);
+        List<Category> categoryList = user.getCategoryList();
+
+        List<Response> categoryDtoList = categoryList.stream()
+                .filter(category -> !category.isDeleted() && predicate.test(category))
+                .map(category -> new Response(category.getId(), category.getTitle(), category.getColor(), category.getTomato()))
+                .collect(Collectors.toList());
+
+        return ApiResponse.success(CATEGORY_LIST_FETCH_SUCCESS, CategoryListDto.from(categoryDtoList));
     }
 
     private User getUserByUserId(Long userId) {
