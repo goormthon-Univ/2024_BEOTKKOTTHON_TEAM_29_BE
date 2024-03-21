@@ -44,8 +44,9 @@ public class ClubService_JE {
                 .findById(clubId).orElseThrow(() -> new NotFoundException(ErrorMessage.CLUB_NOT_EXIST));
 
         // 클럽 회원인지 확인
-        boolean isClubMember = club.getClubMembersList().stream().anyMatch(clubMembers -> clubMembers.getUser().equals(user));
-        if (isClubMember) {
+        boolean isClubMember = club.getClubMembersList().stream()
+                .anyMatch(clubMembers -> clubMembers.getUser().equals(user));
+        if (!isClubMember) {
             throw new BadRequestException(ErrorMessage.USER_NOT_CLUB_MEMBER);
         }
 
