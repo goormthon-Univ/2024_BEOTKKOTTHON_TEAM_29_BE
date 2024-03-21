@@ -45,8 +45,11 @@ public class ClubService_JE {
                 .findById(clubId).orElseThrow(() -> new NotFoundException(ErrorMessage.CLUB_NOT_EXIST));
 
         // 클럽 회원인지 확인
-        clubMembersRepository.findByUserIdAndClubId(user.getId(), club.getId())
-                .orElseThrow(() -> new NotFoundException(ErrorMessage.USER_NOT_CLUB_MEMBER));
+        boolean isClubMember = club.getClubMembersList().stream()
+                .anyMatch(clubMembers -> clubMembers.getUser().equals(user));
+        if (isClubMember) {
+            throw new BadRequestException(ErrorMessage.USER_NOT_CLUB_MEMBER);
+        }
 
         // club에 있는 member 정보 저장
         List<ClubGetDto.ClubMember> clubMemberList = new ArrayList<>();
