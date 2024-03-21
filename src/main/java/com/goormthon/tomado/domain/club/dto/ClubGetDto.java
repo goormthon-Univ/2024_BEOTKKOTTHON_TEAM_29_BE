@@ -45,6 +45,16 @@ public class ClubGetDto {
 
     @Getter
     @NoArgsConstructor
+    public static class ResponseList {
+        private List<Response> clubList;
+
+        public ResponseList(List<Response> clubList) {
+            this.clubList = clubList;
+        }
+    }
+
+    @Getter
+    @NoArgsConstructor
     public static class ClubMember {
         private Long user_id;
         private String nickname;
