@@ -28,8 +28,10 @@ public enum SuccessMessage {
 
     TASK_SAVE_SUCCESS(CREATED, "Task 생성 성공"),
     TOMA_SAVE_SUCCESS(OK, "토마 적립 성공"),
-    TASK_TOMA_LIST_FETCH_SUCCESS(OK, "월별 토마 개수 조회 성공")
+    TASK_TOMA_LIST_FETCH_SUCCESS(OK, "월별 토마 개수 조회 성공"),
 
+    TOMADO_FETCH_SUCCESS(OK, "캐릭터 조회 성공"),
+    TOMADO_BUY_SUCCESS(OK, "캐릭터 구입 성공")
     ;
 
     private final HttpStatus httpStatus;

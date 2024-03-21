@@ -7,11 +7,13 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Getter
+@EntityListeners(AuditingEntityListener.class)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class UserTomado {
 
@@ -35,6 +37,7 @@ public class UserTomado {
     private LocalDateTime createdAt;
 
     public UserTomado(User user, Tomado tomado) {
+        this.id = new UserTomadoId(user.getId(), tomado.getId());
         this.user = user;
         this.tomado = tomado;
     }
