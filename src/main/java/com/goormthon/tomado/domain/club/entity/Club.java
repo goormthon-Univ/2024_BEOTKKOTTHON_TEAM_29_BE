@@ -2,6 +2,7 @@ package com.goormthon.tomado.domain.club.entity;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.goormthon.tomado.domain.category.entity.ColorType;
+import com.goormthon.tomado.domain.club.dto.ClubUpdateDto;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -65,4 +66,14 @@ public class Club {
         this.endDate = endDate;
     }
 
+    public Club update(ClubUpdateDto.Request request) {
+        this.title = title.equals(request.getTitle()) || request.getTitle() == null ? title : request.getTitle();
+        this.color = color.equals(request.getColor()) || request.getColor() == null ? color : request.getColor();;
+        this.memberNumber = request.getMember_number();
+        this.goal = request.getGoal();
+        this.memo = memo.equals(request.getMemo()) || request.getMemo() == null ? title : request.getMemo();;
+        this.endDate = request.getEnd_date();
+
+        return this;
+    }
 }
