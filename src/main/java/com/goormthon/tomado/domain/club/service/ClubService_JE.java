@@ -39,14 +39,12 @@ public class ClubService_JE {
     public ApiResponse<ClubGetDto.Response> getClub(Long userId, Long clubId) {
 
         // 회원 & 클럽 존재 확인
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new NotFoundException(ErrorMessage.USER_NOT_EXIST));
+        User user = getUserByUserId(userId);
         Club club = clubRepository
                 .findById(clubId).orElseThrow(() -> new NotFoundException(ErrorMessage.CLUB_NOT_EXIST));
 
         // 클럽 회원인지 확인
-        boolean isClubMember = club.getClubMembersList().stream()
-                .anyMatch(clubMembers -> clubMembers.getUser().equals(user));
+        boolean isClubMember = club.getClubMembersList().stream().anyMatch(clubMembers -> clubMembers.getUser().equals(user));
         if (isClubMember) {
             throw new BadRequestException(ErrorMessage.USER_NOT_CLUB_MEMBER);
         }
@@ -61,10 +59,13 @@ public class ClubService_JE {
 
     }
 
+    private User getUserByUserId(Long userId) {
+        return userRepository.findById(userId).orElseThrow(() -> new NotFoundException(ErrorMessage.USER_NOT_EXIST));
+    }
+
     public ApiResponse joinClub(ClubDto.Join request) {
         // 회원 & 클럽 확인
-        User user = userRepository.findById(request.getUser_id())
-                .orElseThrow(() -> new NotFoundException(ErrorMessage.USER_NOT_EXIST));
+        User user = getUserByUserId(request.getUser_id());
         Club club = clubRepository.findById(request.getClub_id())
                 .orElseThrow(() -> new NotFoundException(ErrorMessage.CLUB_NOT_EXIST));
 
