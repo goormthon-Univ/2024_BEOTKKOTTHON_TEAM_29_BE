@@ -34,7 +34,8 @@ public enum SuccessMessage {
     TOMADO_BUY_SUCCESS(OK, "캐릭터 구입 성공"),
 
     CLUB_CREATE_SUCCESS(CREATED, "클럽 생성 성공"),
-    CLUB_FETCH_SUCCESS(OK, "토마 클럽 조회 성공")
+    CLUB_FETCH_SUCCESS(OK, "토마 클럽 조회 성공"),
+    CLUB_JOIN_SUCCESS(OK, "클럽 가입 성공")
     ;
 
     private final HttpStatus httpStatus;
