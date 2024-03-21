@@ -22,6 +22,11 @@ public class ClubController_JE {
         return clubService.getClub(userId, clubId);
     }
 
+    @GetMapping("/{user_id}")
+    public ApiResponse<ClubGetDto.ResponseList> getClubList(@PathVariable(name = "user_id") Long userId) {
+        return clubService.getClubList(userId);
+    }
+
     @PostMapping("/join")
     public ApiResponse joinClub(@RequestBody ClubDto.Join request) {
         return clubService.joinClub(request);

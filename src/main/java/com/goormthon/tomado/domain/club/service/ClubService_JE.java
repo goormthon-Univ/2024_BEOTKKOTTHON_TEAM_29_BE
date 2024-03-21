@@ -21,9 +21,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
-import static com.goormthon.tomado.common.response.SuccessMessage.CLUB_FETCH_SUCCESS;
-import static com.goormthon.tomado.common.response.SuccessMessage.CLUB_JOIN_SUCCESS;
+import static com.goormthon.tomado.common.response.SuccessMessage.*;
 
 @Service
 @RequiredArgsConstructor
@@ -104,4 +104,15 @@ public class ClubService_JE {
 
         return ApiResponse.success(CLUB_JOIN_SUCCESS);
     }
+
+    public ApiResponse<ClubGetDto.ResponseList> getClubList(Long userId) {
+        User user = getUserByUserId(userId);
+
+        List<ClubGetDto.Response> responseList = user.getClubList().stream()
+                .map(clubMembers -> ClubGetDto.Response.from(clubMembers.getClub(), getClubMemberList(clubMembers.getClub())))
+                .collect(Collectors.toList());
+
+        return ApiResponse.success(CLUB_LIST_FETCH_SUCCESS, new ClubGetDto.ResponseList(responseList));
+    }
+
 }
