@@ -76,7 +76,12 @@ public class UserService {
 
         User user = userRepository.findById(user_id)
                 .orElseThrow(() -> new NotFoundException(USER_NOT_EXIST));
-        request.setPassword(passwordEncoder.encode(request.getPassword()));
+
+        if (request.getPassword().isEmpty()) {
+            request.setPassword(request.getPassword());
+        } else {
+            request.setPassword(passwordEncoder.encode(request.getPassword()));
+        }
 
         try {
             User userChanged = userRepository.save(user.change(request));
