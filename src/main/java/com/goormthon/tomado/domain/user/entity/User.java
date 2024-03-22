@@ -74,10 +74,10 @@ public class User {
      * - null 값이 들어올 경우
      */
     public User change(ChangeRequest request) {
-        this.loginId = loginId.equals(request.getLogin_id()) || request.getLogin_id() == null ? loginId : request.getLogin_id();
-        this.password = password.equals(request.getPassword()) || request.getPassword() == null ? password : request.getPassword();
-        this.nickname = nickname.equals(request.getNickname()) || request.getNickname() == null ? nickname : request.getNickname();
-        this.characterUrl = characterUrl.equals(request.getCharacter_url()) || request.getCharacter_url() == null ? characterUrl : request.getCharacter_url();
+        this.loginId = loginId.equals(request.getLogin_id()) || request.getLogin_id().isEmpty() ? loginId : request.getLogin_id();
+        this.password = password.equals(request.getPassword()) || request.getPassword().isEmpty() ? password : request.getPassword();
+        this.nickname = nickname.equals(request.getNickname()) || request.getNickname().isEmpty() ? nickname : request.getNickname();
+        this.characterUrl = characterUrl.equals(request.getCharacter_url()) || request.getCharacter_url().isEmpty() ? characterUrl : request.getCharacter_url();
 
         return this;
     }
