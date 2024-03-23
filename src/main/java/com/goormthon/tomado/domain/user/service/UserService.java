@@ -33,12 +33,10 @@ public class UserService {
     final private UserTomadoRepository userTomadoRepository;
 
     public ApiResponse<Response.Simple> signUp(SignUpDto.Request request) {
-
         User user = new User(request.getLogin_id(), passwordEncoder.encode(request.getPassword()), request.getNickname());
         User userRegistered = validateLoginInfo(user);
         giveDefaultTomado(userRegistered);
         return ApiResponse.success(USER_SIGNUP_SUCCESS, Response.Simple.from(user.getId()));
-
     }
 
     private User validateLoginInfo(User user) {
@@ -62,7 +60,6 @@ public class UserService {
     }
 
     public ApiResponse<Response.Simple> login(LoginDto.Request request) {
-
         User user = userRepository.findByLoginId(request.getLogin_id()).orElseThrow(() -> new NotFoundException(USER_LOGIN_ID_NOT_EXIST));
 
         if (passwordEncoder.matches(request.getPassword(), user.getPassword())) {
@@ -73,7 +70,6 @@ public class UserService {
     }
 
     public ApiResponse<Response.Simple> change(Long user_id, ChangeRequest request) {
-
         User user = getUser(user_id);
 
         if (request.getPassword().isEmpty()) {
@@ -84,7 +80,6 @@ public class UserService {
 
         User userChanged = validateLoginInfo(user.change(request));
         return ApiResponse.success(USER_INFO_CHANGE_SUCCESS, Response.Simple.from(userChanged.getId()));
-
     }
 
     @Transactional(readOnly = true)

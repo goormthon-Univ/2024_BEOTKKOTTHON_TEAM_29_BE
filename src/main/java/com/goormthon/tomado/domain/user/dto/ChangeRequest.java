@@ -1,13 +1,11 @@
 package com.goormthon.tomado.domain.user.dto;
 
-import com.goormthon.tomado.domain.user.entity.User;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
 public class ChangeRequest {
-
     private String login_id;
     private String password;
     private String nickname;

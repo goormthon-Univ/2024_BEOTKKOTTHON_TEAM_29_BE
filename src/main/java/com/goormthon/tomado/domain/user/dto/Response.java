@@ -32,7 +32,6 @@ public class Response {
     @Getter
     @NoArgsConstructor
     public static class Simple {
-
         private Long user_id;
 
         private Simple(Long user_id) {
@@ -43,6 +42,5 @@ public class Response {
             return new Simple(user_id);
         }
     }
-
 
 }
