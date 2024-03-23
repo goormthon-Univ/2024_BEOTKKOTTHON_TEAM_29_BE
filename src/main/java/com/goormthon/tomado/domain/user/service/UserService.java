@@ -124,8 +124,7 @@ public class UserService {
     }
 
     private User getUser(Long userId) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new NotFoundException(USER_NOT_EXIST));
-        return user;
+        return userRepository.findById(userId).orElseThrow(() -> new NotFoundException(USER_NOT_EXIST));
     }
 
     private Tomado getTomado(long id) {
