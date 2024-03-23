@@ -43,7 +43,7 @@ public class UserService {
 
     private User validateLoginInfo(User user) {
         try {
-            return userRepository.save(user);
+            return userRepository.saveAndFlush(user);
         } catch (DataIntegrityViolationException exception) {
             throw new BadRequestException(USER_LOGIN_ID_VALIDATE);
         }
@@ -82,12 +82,8 @@ public class UserService {
             request.setPassword(passwordEncoder.encode(request.getPassword()));
         }
 
-        try {
-            User userChanged = userRepository.saveAndFlush(user.change(request));
-            return ApiResponse.success(USER_INFO_CHANGE_SUCCESS, Response.Simple.from(userChanged.getId()));
-        } catch (DataIntegrityViolationException exception) {
-            throw new BadRequestException(USER_LOGIN_ID_VALIDATE);
-        }
+        User userChanged = validateLoginInfo(user.change(request));
+        return ApiResponse.success(USER_INFO_CHANGE_SUCCESS, Response.Simple.from(userChanged.getId()));
 
     }
 
