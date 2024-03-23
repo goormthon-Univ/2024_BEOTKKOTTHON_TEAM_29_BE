@@ -11,6 +11,7 @@
     + [2. Architecture](#2-architecture)
     + [3. ERD 및 와이어 프레임](#3-erd-및-와이어-프레임)
   * [주요 기능]
+  * [기능 설명]
     + [1. 회원 가입 로그인](#1-회원-가입-로그인)
     + [2. 타이머 기능](#2-타이머-기능)
     + [3. 카테고리 기능](#3-카테고리-기능)
@@ -58,6 +59,14 @@
 ---
 
 ## [주요 기능]
+
+<img src="https://github.com/goormthon-Univ/2024_BEOTKKOTTHON_TEAM_29_BE/assets/83761128/e13205f4-33f5-4528-b994-1aee0c2f7e6d" width="75%" height="75%" title="기능1" alt="RubberDuck"></img>
+
+<img src="https://github.com/goormthon-Univ/2024_BEOTKKOTTHON_TEAM_29_BE/assets/83761128/89359d38-b4e4-44b3-9b7d-1d96c595d894" width="75%" height="75%" title="기능2" alt="RubberDuck"></img>
+
+<img src="https://github.com/goormthon-Univ/2024_BEOTKKOTTHON_TEAM_29_BE/assets/83761128/c2397c08-7401-435d-95d2-0520e67393c2" width="75%" height="75%" title="기능3" alt="RubberDuck"></img>
+
+## [기능 설명]
 
 ### 1. 회원 가입 로그인
 
