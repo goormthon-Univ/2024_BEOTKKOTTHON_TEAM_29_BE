@@ -3,7 +3,6 @@ package com.goormthon.tomado.domain.memo.service;
 import com.goormthon.tomado.common.ApiResponse;
 import com.goormthon.tomado.common.exception.BadRequestException;
 import com.goormthon.tomado.common.exception.NotFoundException;
-import com.goormthon.tomado.common.response.SuccessMessage;
 import com.goormthon.tomado.domain.memo.dto.MemoDto;
 import com.goormthon.tomado.domain.memo.entity.Memo;
 import com.goormthon.tomado.domain.memo.repository.MemoRepository;
