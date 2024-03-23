@@ -83,7 +83,7 @@ public class UserService {
         }
 
         try {
-            User userChanged = userRepository.save(user.change(request));
+            User userChanged = userRepository.saveAndFlush(user.change(request));
             return ApiResponse.success(USER_INFO_CHANGE_SUCCESS, Response.Simple.from(userChanged.getId()));
         } catch (DataIntegrityViolationException exception) {
             throw new BadRequestException(USER_LOGIN_ID_VALIDATE);
