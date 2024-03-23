@@ -25,22 +25,17 @@ public class MemoService {
 
     @Transactional(readOnly = true)
     public ApiResponse<MemoDto.ResponseList> getMemoList(Long userId) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new NotFoundException(USER_NOT_EXIST));
+        User user = getUser(userId);
         return ApiResponse.success(SuccessMessage.MEMO_LIST_FETCH_SUCCESS, MemoDto.from(user.getMemoList()));
     }
 
     public ApiResponse write(Long userId, MemoDto.Write write) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new NotFoundException(USER_NOT_EXIST));
-
-        memoRepository.save(new Memo(user, write.getContent()));
+        memoRepository.save(new Memo(getUser(userId), write.getContent()));
         return ApiResponse.success(SuccessMessage.MEMO_CREATE_SUCCESS);
     }
 
     public ApiResponse delete(Long userId, Long memoId) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new NotFoundException(USER_NOT_EXIST));
+        User user = getUser(userId);
 
         boolean existMemo = false;
         for (Memo memo : user.getMemoList()) {
@@ -49,16 +44,23 @@ public class MemoService {
                 break;
             }
         }
+        
 
-        Memo memo = memoRepository.findById(memoId)
-                .orElseThrow(() -> new NotFoundException(MEMO_NOT_EXIST));
         if (existMemo) {
-            memoRepository.delete(memo);
+            memoRepository.delete(getMemo(memoId));
         } else {
             throw new BadRequestException(USER_NOT_HAVE_MEMO);
         }
 
         return ApiResponse.success(SuccessMessage.MEMO_DELETE_SUCCESS);
+    }
+
+    private Memo getMemo(Long memoId) {
+        return memoRepository.findById(memoId).orElseThrow(() -> new NotFoundException(MEMO_NOT_EXIST));
+    }
+
+    private User getUser(Long userId) {
+        return userRepository.findById(userId).orElseThrow(() -> new NotFoundException(USER_NOT_EXIST));
     }
 
 }
