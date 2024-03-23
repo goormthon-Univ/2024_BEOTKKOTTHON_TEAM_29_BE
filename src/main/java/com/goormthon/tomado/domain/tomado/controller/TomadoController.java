@@ -21,7 +21,7 @@ public class TomadoController {
     }
 
     @Operation(summary = "상점에서 캐릭터 불러오기")
-    @GetMapping("")
+    @GetMapping
     public ApiResponse<TomadoDto.ResponseList> getTomadoList(@RequestParam Long user) {
         return tomadoService.getTomadoList(user);
     }
