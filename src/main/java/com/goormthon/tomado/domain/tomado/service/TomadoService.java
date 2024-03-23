@@ -34,16 +34,14 @@ public class TomadoService {
 
     @Transactional(readOnly = true)
     public ApiResponse<TomadoDto.Response> findById(Long tomadoId) {
-        Tomado tomado = tomadoRepository.findById(tomadoId)
-                .orElseThrow(() -> new NotFoundException(TOMADO_NOT_EXIST));
+        Tomado tomado = getTomado(tomadoId);
         return ApiResponse.success(SuccessMessage.TOMADO_FETCH_SUCCESS, TomadoDto.from(tomado));
     }
 
     @Transactional(readOnly = true)
     public ApiResponse<TomadoDto.ResponseList> findAvailableTomadoList(Long userId) {
 
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new NotFoundException(USER_NOT_EXIST));
+        User user = getUser(userId);
 
         // 사용자가 보유한 토마두 리스트 -> tomadoIdList : id 값만 따로 빼서 저장
         List<UserTomado> userTomadoList = userTomadoRepository.findByUserId(user.getId()).orElse(new ArrayList<UserTomado>());
@@ -61,11 +59,9 @@ public class TomadoService {
         // 보유 -> tomadoHaveList에 add | 미보유 -> tomadoHaveNotList에 add
         for (Long i = 1L; i <= TOMADO_COUNT; i++) {  // TOMADO_COUNT는 관리자가 관리하기 때문에 상수로 지정
             if (tomadoIdList.contains(i)) {
-                tomadoHaveList.add(TomadoDto.from(tomadoRepository.findById(i)
-                        .orElseThrow(() -> new NotFoundException(TOMADO_NOT_EXIST))));
+                tomadoHaveList.add(TomadoDto.from(getTomado(i)));
             } else {
-                tomadoNotHaveList.add(TomadoDto.from(tomadoRepository.findById(i)
-                        .orElseThrow(() -> new NotFoundException(TOMADO_NOT_EXIST))));
+                tomadoNotHaveList.add(TomadoDto.from(getTomado(i)));
             }
         }
 
@@ -75,12 +71,10 @@ public class TomadoService {
 
     public ApiResponse buyTomado(Long userId, Long tomadoId) {
         // 회원 정보 - 보유 토마량 확인
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new NotFoundException(USER_NOT_EXIST));
+        User user = getUser(userId);
 
         // 토마두 정보 - 구매 토마량 확인
-        Tomado tomado = tomadoRepository.findById(tomadoId)
-                .orElseThrow(() -> new NotFoundException(TOMADO_NOT_EXIST));
+        Tomado tomado = getTomado(tomadoId);
 
         // 구매한 토마두인지 확인
         for (UserTomado userTomado : user.getUserTomadoList()) {
@@ -98,6 +92,14 @@ public class TomadoService {
         }
 
         return ApiResponse.success(SuccessMessage.TOMADO_BUY_SUCCESS);
+    }
+
+    private Tomado getTomado(Long tomadoId) {
+        return tomadoRepository.findById(tomadoId).orElseThrow(() -> new NotFoundException(TOMADO_NOT_EXIST));
+    }
+
+    private User getUser(Long userId) {
+        return userRepository.findById(userId).orElseThrow(() -> new NotFoundException(USER_NOT_EXIST));
     }
 
 }
