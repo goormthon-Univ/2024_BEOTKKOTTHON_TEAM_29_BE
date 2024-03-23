@@ -5,14 +5,25 @@
 
 ### 목차
 
-[\[프로젝트 개요\]](#[프로젝트-개요])
-
-[\[프로젝트 설명\]](#[프로젝트-설명])
+  * [프로젝트 개요]
+  * [프로젝트 설명]
+    + [1. BackEnd Tech](#1-backend-tech)
+    + [2. Architecture](#2-architecture)
+    + [3. ERD 및 와이어 프레임](#3-erd-및-와이어-프레임)
+  * [주요 기능]
+    + [1. 회원 가입 로그인](#1-회원-가입-로그인)
+    + [2. 타이머 기능](#2-타이머-기능)
+    + [3. 카테고리 기능](#3-카테고리-기능)
+    + [4. 사용자 편의 기능](#4-사용자-편의-기능)
+    + [5. 월간 달력 보기 기능](#5-월간-달력-보기-기능)
+    + [6. 클럽 기능](#6-클럽-기능)
+    + [7. 상점 기능](#7-상점-기능)
+    + [8. 도감 기능](#8-도감-기능)
 
 ### Contact
 
-- [soyeonvv](https://github.com/soyeonvv) : wnslcosltimo12@gmail.com
-- [shin0112](https://github.com/shin0112) : 이메일주소
+- [soyeonvv](https://github.com/soyeonvv) : sovvworld@gmail.com
+- [shin0112](https://github.com/shin0112) : wnslcosltimo12@gmail.com
 
 ## [프로젝트 개요]
 
@@ -36,17 +47,17 @@
 | Cooperative tool | <img src="https://img.shields.io/badge/github-181717?style=for-the-badge&logo=github&logoColor=white"> <img src="https://img.shields.io/badge/git-F05032?style=for-the-badge&logo=git&logoColor=white"> |
 | IDE | <img src="https://img.shields.io/badge/intellijidea-000000?style=for-the-badge&logo=intellijidea&logoColor=white"> |
 
-### 2. Architecture
-
-<img src="https://github.com/goormthon-Univ/2024_BEOTKKOTTHON_TEAM_29_BE/assets/83761128/f3b3b5ef-68ff-4d78-9f39-8ee5f68cc223" width="70%" height="70%" title="BE Architecture" alt="RubberDuck"></img>
-
-### 3. ERD 및 와이어 프레임
+### 2. ERD 및 와이어 프레임
 
 <img src="https://github.com/goormthon-Univ/2024_BEOTKKOTTHON_TEAM_29_BE/assets/83761128/d920ee46-ec29-4eed-b44f-0b74f45369db" width="60%" height="55%" title="ERD & 와이어 프레임" alt="RubberDuck"></img>
 
+### 3. Architecture
+
+<img src="https://github.com/goormthon-Univ/2024_BEOTKKOTTHON_TEAM_29_BE/assets/83761128/f3b3b5ef-68ff-4d78-9f39-8ee5f68cc223" width="70%" height="70%" title="BE Architecture" alt="RubberDuck"></img>
+
 ---
 
-## 주요 기능
+## [주요 기능]
 
 ### 1. 회원 가입 로그인
 
