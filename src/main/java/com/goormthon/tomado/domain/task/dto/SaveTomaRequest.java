@@ -14,12 +14,6 @@ public class SaveTomaRequest {
     private Long task_id;
     private LocalDateTime created_at;
 
-    public SaveTomaRequest(Long user_id, Long task_id, LocalDateTime created_at) {
-        this.user_id = user_id;
-        this.task_id = task_id;
-        this.created_at = created_at;
-    }
-
     @Getter
     @NoArgsConstructor
     public static class NewTaskId {
