@@ -23,8 +23,8 @@ public class UserController {
     }
 
     @PostMapping("/users/signup/exists")
-    public ApiResponse<Boolean> validateLoginId(@RequestBody SignUpDto.Check loginIdCheckDto) {
-        return userService.validateLoginId(loginIdCheckDto.getLogin_id());
+    public ApiResponse<Boolean> validateLoginId(@RequestBody SignUpDto.Check request) {
+        return userService.validateLoginId(request.getLogin_id());
     }
 
     @Operation(summary = "로그인")
