@@ -69,8 +69,7 @@ public class UserService {
 
     public ApiResponse<Response.Simple> change(Long user_id, ChangeRequest request) {
 
-        User user = userRepository.findById(user_id)
-                .orElseThrow(() -> new NotFoundException(USER_NOT_EXIST));
+        User user = getUser(user_id);
 
         if (request.getPassword().isEmpty()) {
             request.setPassword(request.getPassword());
@@ -89,13 +88,12 @@ public class UserService {
 
     @Transactional(readOnly = true)
     public ApiResponse<Response.Detailed> findById(Long userId) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new NotFoundException(USER_NOT_EXIST));
+        User user = getUser(userId);
         return ApiResponse.success(USER_INFO_FIND_SUCCESS, Response.Detailed.from(user));
     }
 
     public ApiResponse withdraw(Long userId) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new NotFoundException(USER_NOT_EXIST));
+        User user = getUser(userId);
         userRepository.delete(user);
         return ApiResponse.success(USER_WITHDRAW_SUCCESS);
     }
@@ -103,8 +101,7 @@ public class UserService {
     @Transactional(readOnly = true)
     public ApiResponse<List<BookResponse.Simple>> getBook(Long userId) {
         // 회원 정보 확인
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new NotFoundException(USER_NOT_EXIST));
+        User user = getUser(userId);
 
         // 회원이 보유한 토마두 가져오기
         ArrayList<BookResponse.Simple> simpleResponseList = new ArrayList<BookResponse.Simple>();
@@ -118,8 +115,7 @@ public class UserService {
     @Transactional(readOnly = true)
     public ApiResponse<BookResponse.Detailed> getTomadoInfoOfBook(Long userId, Long tomadoId) {
         // 회원 정보 확인
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new NotFoundException(USER_NOT_EXIST));
+        User user = getUser(userId);
 
         // 토마두 정보 확인
         Tomado tomado = tomadoRepository.findById(tomadoId).orElseThrow(() -> new NotFoundException(TOMADO_NOT_EXIST));
@@ -131,4 +127,10 @@ public class UserService {
         return ApiResponse.success(TOMADO_FETCH_SUCCESS, BookResponse.Detailed.from(userTomado));
     }
 
+    private User getUser(Long userId) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new NotFoundException(USER_NOT_EXIST));
+        return user;
+    }
+
 }
+
