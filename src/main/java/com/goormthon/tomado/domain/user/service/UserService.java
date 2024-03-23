@@ -35,7 +35,7 @@ public class UserService {
     final private TomadoRepository tomadoRepository;
     final private UserTomadoRepository userTomadoRepository;
 
-    public ApiResponse<SimpleResponse> signUp(SignUpRequest request) {
+    public ApiResponse<Response.Simple> signUp(SignUpDto.Request request) {
 
         User user = new User(request.getLogin_id(), passwordEncoder.encode(request.getPassword()), request.getNickname());
         try {

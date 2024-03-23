@@ -23,7 +23,7 @@ public class UserController {
     @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "login_id : 아이디 / password : 비밀번호 / nickname : 별명", required = true
             ,content = @Content(schema = @Schema(implementation = SignUpRequest.class)))
     @PostMapping("users/signup")
-    public ApiResponse<SimpleResponse> signUp(@RequestBody SignUpRequest request) {
+    public ApiResponse<Response.Simple> signUp(@RequestBody SignUpDto.Request request) {
         return userService.signUp(request);
     }
 
