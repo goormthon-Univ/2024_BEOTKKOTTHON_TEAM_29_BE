@@ -16,8 +16,8 @@ public class TomadoController {
 
     @Operation(summary = "캐릭터 정보 조회")
     @GetMapping("/{tomado_id}")
-    public ApiResponse<TomadoDto.Response> getTomadoInfo(@PathVariable Long tomado_id) {
-        return tomadoService.getTomadoInfo(tomado_id);
+    public ApiResponse<TomadoDto.Response> getTomadoInfo(@PathVariable(name = "tomado_id") Long tomadoId) {
+        return tomadoService.getTomadoInfo(tomadoId);
     }
 
     @Operation(summary = "상점에서 캐릭터 불러오기")
