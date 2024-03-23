@@ -17,16 +17,19 @@ public class ClubController {
 
     private final ClubService clubService;
 
+    @Operation(summary = "토마 클럽 생성")
     @PostMapping
     public ApiResponse<ClubCreateDto.Response> createClub(@RequestBody ClubCreateDto.Request request) {
         return clubService.createClub(request);
     }
 
+    @Operation(summary = "토마 클럽 수정")
     @PutMapping
     public ApiResponse<ClubCreateDto.Response> updateClub(@RequestBody ClubUpdateDto.Request request) {
         return clubService.updateClub(request);
     }
 
+    @Operation(summary = "토마 클럽 삭제")
     @DeleteMapping
     public ApiResponse deleteClub(@RequestParam(name = "club") Long club_id, @RequestParam(name = "user") Long user_id) {
         return clubService.deleteClub(club_id, user_id);
