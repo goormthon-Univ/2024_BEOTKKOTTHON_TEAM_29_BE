@@ -33,14 +33,13 @@ public class TomadoService {
     private static final Long TOMADO_COUNT = 9L;
 
     @Transactional(readOnly = true)
-    public ApiResponse<TomadoDto.Response> findById(Long tomadoId) {
+    public ApiResponse<TomadoDto.Response> getTomadoInfo(Long tomadoId) {
         Tomado tomado = getTomado(tomadoId);
         return ApiResponse.success(SuccessMessage.TOMADO_FETCH_SUCCESS, TomadoDto.from(tomado));
     }
 
     @Transactional(readOnly = true)
-    public ApiResponse<TomadoDto.ResponseList> findAvailableTomadoList(Long userId) {
-
+    public ApiResponse<TomadoDto.ResponseList> getTomadoList(Long userId) {
         User user = getUser(userId);
 
         // 사용자가 보유한 토마두 리스트 -> tomadoIdList : id 값만 따로 빼서 저장

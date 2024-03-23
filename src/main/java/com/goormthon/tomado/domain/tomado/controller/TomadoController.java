@@ -16,14 +16,14 @@ public class TomadoController {
 
     @Operation(summary = "캐릭터 정보 조회")
     @GetMapping("/{tomado_id}")
-    public ApiResponse<TomadoDto.Response> findById(@PathVariable Long tomado_id) {
-        return tomadoService.findById(tomado_id);
+    public ApiResponse<TomadoDto.Response> getTomadoInfo(@PathVariable Long tomado_id) {
+        return tomadoService.getTomadoInfo(tomado_id);
     }
 
     @Operation(summary = "상점에서 캐릭터 불러오기")
     @GetMapping("")
-    public ApiResponse<TomadoDto.ResponseList> findAvailableTomadoList(@RequestParam Long user) {
-        return tomadoService.findAvailableTomadoList(user);
+    public ApiResponse<TomadoDto.ResponseList> getTomadoList(@RequestParam Long user) {
+        return tomadoService.getTomadoList(user);
     }
 
     @Operation(summary = "캐릭터 구입")
