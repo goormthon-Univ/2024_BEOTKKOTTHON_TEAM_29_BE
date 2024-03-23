@@ -43,8 +43,8 @@ public class UserController {
 
     @Operation(summary = "회원 정보 조회")
     @GetMapping("users/{user_id}")
-    public ApiResponse<Response.Detailed> findById(@PathVariable Long user_id) {
-        return userService.findById(user_id);
+    public ApiResponse<Response.Detailed> getUserInfo(@PathVariable Long user_id) {
+        return userService.getUserInfo(user_id);
     }
 
     @Operation(summary = "회원 탈퇴")

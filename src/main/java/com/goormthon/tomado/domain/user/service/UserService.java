@@ -87,7 +87,7 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
-    public ApiResponse<Response.Detailed> findById(Long userId) {
+    public ApiResponse<Response.Detailed> getUserInfo(Long userId) {
         User user = getUser(userId);
         return ApiResponse.success(USER_INFO_FIND_SUCCESS, Response.Detailed.from(user));
     }
