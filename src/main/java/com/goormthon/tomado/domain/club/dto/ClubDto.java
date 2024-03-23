@@ -12,4 +12,11 @@ public class ClubDto {
         private Long club_id;
     }
 
+    @Getter
+    @NoArgsConstructor
+    public static class SaveLink {
+        private Long club_id;
+        private String url;
+    }
+
 }

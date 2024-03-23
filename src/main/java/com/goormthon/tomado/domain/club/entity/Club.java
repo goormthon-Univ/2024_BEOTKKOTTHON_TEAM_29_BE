@@ -87,4 +87,9 @@ public class Club {
         this.isCompleted = true;
         return this;
     }
+
+    public Club saveUrl(String url) {
+        this.url = url;
+        return this;
+    }
 }
