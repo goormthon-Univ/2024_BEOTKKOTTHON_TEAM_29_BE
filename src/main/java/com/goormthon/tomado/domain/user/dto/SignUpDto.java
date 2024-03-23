@@ -21,6 +21,18 @@ public class SignUpDto {
         }
     }
 
+    @Getter
+    @NoArgsConstructor(access = AccessLevel.PROTECTED)
+    public static class Check {
+
+        String login_id;
+
+        public Check(String login_id) {
+            this.login_id = login_id;
+        }
+
+    }
+
 
 
 

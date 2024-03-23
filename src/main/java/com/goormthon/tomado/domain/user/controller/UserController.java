@@ -25,7 +25,7 @@ public class UserController {
     }
 
     @PostMapping("/users/signup/exists")
-    public ApiResponse<Boolean> validateLoginId(@RequestBody LoginDto.Check loginIdCheckDto) {
+    public ApiResponse<Boolean> validateLoginId(@RequestBody SignUpDto.Check loginIdCheckDto) {
         return userService.validateLoginId(loginIdCheckDto.getLogin_id());
     }
 
