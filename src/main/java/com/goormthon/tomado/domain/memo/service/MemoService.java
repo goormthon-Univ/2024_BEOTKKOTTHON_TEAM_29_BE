@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import static com.goormthon.tomado.common.response.ErrorMessage.*;
+import static com.goormthon.tomado.common.response.SuccessMessage.*;
 
 @Service
 @RequiredArgsConstructor
@@ -26,12 +27,12 @@ public class MemoService {
     @Transactional(readOnly = true)
     public ApiResponse<MemoDto.ResponseList> getMemoList(Long userId) {
         User user = getUser(userId);
-        return ApiResponse.success(SuccessMessage.MEMO_LIST_FETCH_SUCCESS, MemoDto.from(user.getMemoList()));
+        return ApiResponse.success(MEMO_LIST_FETCH_SUCCESS, MemoDto.from(user.getMemoList()));
     }
 
     public ApiResponse write(Long userId, MemoDto.Write write) {
         memoRepository.save(new Memo(getUser(userId), write.getContent()));
-        return ApiResponse.success(SuccessMessage.MEMO_CREATE_SUCCESS);
+        return ApiResponse.success(MEMO_CREATE_SUCCESS);
     }
 
     public ApiResponse delete(Long userId, Long memoId) {
@@ -45,7 +46,7 @@ public class MemoService {
             throw new BadRequestException(USER_NOT_HAVE_MEMO);
         }
 
-        return ApiResponse.success(SuccessMessage.MEMO_DELETE_SUCCESS);
+        return ApiResponse.success(MEMO_DELETE_SUCCESS);
     }
 
     private Memo getMemo(Long memoId) {
