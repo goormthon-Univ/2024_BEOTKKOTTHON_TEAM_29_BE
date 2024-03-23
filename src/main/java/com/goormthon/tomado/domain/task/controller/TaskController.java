@@ -16,6 +16,8 @@ public class TaskController {
 
     private final TaskService taskService;
 
+    private static final int TOMA = 1;
+
     @PostMapping
     public ApiResponse<TaskCreateDto.Response> createTask(@RequestBody TaskCreateDto.Request request) {
         return taskService.createTask(request);
@@ -23,7 +25,7 @@ public class TaskController {
 
     @PostMapping("/toma")
     public ApiResponse saveToma(@RequestBody SaveTomaRequest request) {
-        return taskService.saveToma(request);
+        return taskService.saveToma(request, TOMA);
     }
 
     @GetMapping
