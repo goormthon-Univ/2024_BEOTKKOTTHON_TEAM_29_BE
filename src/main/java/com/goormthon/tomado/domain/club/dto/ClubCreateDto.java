@@ -1,6 +1,5 @@
 package com.goormthon.tomado.domain.club.dto;
 
-import com.goormthon.tomado.domain.category.entity.ColorType;
 import com.goormthon.tomado.domain.club.entity.Club;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -20,16 +19,6 @@ public class ClubCreateDto {
         private String memo;
         private LocalDate start_date;
         private LocalDate end_date;
-
-        private Request(Long user_id, String title, int member_number, int goal, String memo, LocalDate start_date, LocalDate end_date) {
-            this.user_id = user_id;
-            this.title = title;
-            this.member_number = member_number;
-            this.goal = goal;
-            this.memo = memo;
-            this.start_date = start_date;
-            this.end_date = end_date;
-        }
     }
 
     @Getter
