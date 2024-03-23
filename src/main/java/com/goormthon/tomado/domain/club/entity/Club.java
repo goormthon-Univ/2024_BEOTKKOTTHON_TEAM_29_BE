@@ -72,6 +72,7 @@ public class Club {
         this.memberNumber = request.getMember_number();
         this.goal = request.getGoal();
         this.memo = memo.equals(request.getMemo()) || request.getMemo() == null ? title : request.getMemo();;
+        this.memo = memo.equals(request.getMemo()) || request.getMemo() == null ? memo : request.getMemo();
         this.endDate = request.getEnd_date();
 
         return this;
