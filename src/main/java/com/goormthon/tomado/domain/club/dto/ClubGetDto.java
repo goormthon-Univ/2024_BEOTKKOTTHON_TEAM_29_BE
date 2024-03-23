@@ -24,8 +24,9 @@ public class ClubGetDto {
         private LocalDate start_date;
         private LocalDate end_date;
         private boolean completed;
+        private String club_url;
 
-        public Response(Long club_id, String title, ColorType colorType, List<ClubMember> memberList, int goal, int current_amount, String memo, LocalDate start_date, LocalDate end_date, boolean completed) {
+        public Response(Long club_id, String title, ColorType colorType, List<ClubMember> memberList, int goal, int current_amount, String memo, LocalDate start_date, LocalDate end_date, boolean completed, String club_url) {
             this.club_id = club_id;
             this.title = title;
             this.colorType = colorType;
@@ -36,10 +37,11 @@ public class ClubGetDto {
             this.start_date = start_date;
             this.end_date = end_date;
             this.completed = completed;
+            this.club_url = club_url;
         }
 
         public static Response from(Club club, List<ClubMember> clubMemberList) {
-            return new Response(club.getId(), club.getTitle(), club.getColor(), clubMemberList, club.getGoal(), club.getCurrentAmount(), club.getMemo(), club.getStartDate(), club.getEndDate(), club.isCompleted());
+            return new Response(club.getId(), club.getTitle(), club.getColor(), clubMemberList, club.getGoal(), club.getCurrentAmount(), club.getMemo(), club.getStartDate(), club.getEndDate(), club.isCompleted(), club.getUrl());
         }
     }
 
