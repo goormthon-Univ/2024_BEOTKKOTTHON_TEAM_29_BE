@@ -43,7 +43,7 @@ public class TomadoService {
         User user = getUser(userId);
 
         // 사용자가 보유한 토마두 리스트 -> tomadoIdList : id 값만 따로 빼서 저장
-        List<UserTomado> userTomadoList = userTomadoRepository.findByUserId(user.getId()).orElse(new ArrayList<UserTomado>());
+        List<UserTomado> userTomadoList = user.getUserTomadoList();
         List<Long> tomadoIdList = new ArrayList<Long>();
         for (UserTomado userTomado : userTomadoList) {
             tomadoIdList.add(userTomado.getTomado().getId());
@@ -65,7 +65,6 @@ public class TomadoService {
         }
 
         return ApiResponse.success(SuccessMessage.TOMADO_FETCH_SUCCESS, new TomadoDto.ResponseList(tomadoHaveList, tomadoNotHaveList));
-
     }
 
     public ApiResponse buyTomado(Long userId, Long tomadoId) {
