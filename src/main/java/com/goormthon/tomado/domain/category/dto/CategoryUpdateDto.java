@@ -15,12 +15,6 @@ public class CategoryUpdateDto {
         private Long user_id;
         private String title;
         private ColorType color;
-
-        private Request(Long user_id, String title, ColorType color) {
-            this.user_id = user_id;
-            this.title = title;
-            this.color = color;
-        }
     }
 
     // Response

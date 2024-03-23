@@ -1,6 +1,5 @@
 package com.goormthon.tomado.domain.category.entity;
 
-import com.goormthon.tomado.domain.category.dto.CategoryUpdateDto;
 import com.goormthon.tomado.domain.club.entity.ClubMembers;
 import com.goormthon.tomado.domain.task.entity.Task;
 import com.goormthon.tomado.domain.user.entity.User;

@@ -15,7 +15,7 @@ public class CategoryListByDateDto {
         this.categoryList = simpleResponseList;
     }
 
-    public static CategoryListByDateDto fromCategoriesByDate(List<SimpleResponse> categoryList) {
+    public static CategoryListByDateDto from(List<SimpleResponse> categoryList) {
         return new CategoryListByDateDto(categoryList);
     }
 }

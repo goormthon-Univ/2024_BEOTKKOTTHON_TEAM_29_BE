@@ -56,18 +56,10 @@ public class CategoryService {
         User user = getUserByUserId(user_id);
         List<Task> taskList = taskRepository.findByUserAndDate(user, selected_date);
 
-        Map<Category, Integer> categoryMap = new HashMap<>();
-        for (Task task : taskList) {
-            Category category = task.getCategory();
-            int tomatoCount = task.getTomato();
-            categoryMap.put(category, categoryMap.getOrDefault(category, 0) + tomatoCount);
-        }
+        Map<Category, Integer> categoryMap = getCategoryTomaMap(taskList);
+        List<SimpleResponse> simpleResponseList = getSimpleResponseList(categoryMap);
 
-        List<SimpleResponse> simpleResponseList = categoryMap.entrySet().stream()
-                .map(entry -> new SimpleResponse(entry.getKey().getTitle(), entry.getKey().getColor(), entry.getValue()))
-                .collect(Collectors.toList());
-
-        return ApiResponse.success(CATEGORY_LIST_FETCH_SUCCESS, CategoryListByDateDto.fromCategoriesByDate(simpleResponseList));
+        return ApiResponse.success(CATEGORY_LIST_FETCH_SUCCESS, CategoryListByDateDto.from(simpleResponseList));
     }
 
     public ApiResponse<SimpleResponse> updateCategory(Long category_id, CategoryUpdateDto.Request request) {
@@ -90,10 +82,7 @@ public class CategoryService {
         Category category =  getCategory(category_id, user_id);
 
         if (category.getTomato() == 0) {
-            List<Task> taskList = category.getTaskList();
-            for (Task task : taskList) {
-                taskRepository.delete(task);
-            }
+            deleteTask(category);
             categoryRepository.delete(category);
         } else {
             categoryRepository.save(category.delete());
@@ -133,5 +122,28 @@ public class CategoryService {
             throw new BadRequestException(CATEGORY_TITLE_EXISTS);
         }
     }
-}
 
+    private Map<Category, Integer> getCategoryTomaMap(List<Task> taskList) {
+        Map<Category, Integer> categoryTomaMap = new HashMap<>();
+        for (Task task : taskList) {
+            Category category = task.getCategory();
+            int tomatoCount = task.getTomato();
+            categoryTomaMap.put(category, categoryTomaMap.getOrDefault(category, 0) + tomatoCount);
+        }
+        return categoryTomaMap;
+    }
+
+    private List<SimpleResponse> getSimpleResponseList(Map<Category, Integer> categoryMap) {
+        List<SimpleResponse> simpleResponseList = categoryMap.entrySet().stream()
+                .map(entry -> new SimpleResponse(entry.getKey().getTitle(), entry.getKey().getColor(), entry.getValue()))
+                .collect(Collectors.toList());
+        return simpleResponseList;
+    }
+
+    private void deleteTask(Category category) {
+        List<Task> taskList = category.getTaskList();
+        for (Task task : taskList) {
+            taskRepository.delete(task);
+        }
+    }
+}
