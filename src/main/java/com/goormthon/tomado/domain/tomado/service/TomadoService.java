@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.goormthon.tomado.common.response.ErrorMessage.*;
+import static com.goormthon.tomado.common.response.SuccessMessage.*;
 
 @Service
 @RequiredArgsConstructor
@@ -35,7 +36,7 @@ public class TomadoService {
     @Transactional(readOnly = true)
     public ApiResponse<TomadoDto.Response> getTomadoInfo(Long tomadoId) {
         Tomado tomado = getTomado(tomadoId);
-        return ApiResponse.success(SuccessMessage.TOMADO_FETCH_SUCCESS, TomadoDto.from(tomado));
+        return ApiResponse.success(TOMADO_FETCH_SUCCESS, TomadoDto.from(tomado));
     }
 
     @Transactional(readOnly = true)
@@ -60,7 +61,7 @@ public class TomadoService {
             }
         }
 
-        return ApiResponse.success(SuccessMessage.TOMADO_FETCH_SUCCESS, new TomadoDto.ResponseList(tomadoHaveList, tomadoNotHaveList));
+        return ApiResponse.success(TOMADO_FETCH_SUCCESS, new TomadoDto.ResponseList(tomadoHaveList, tomadoNotHaveList));
     }
 
     private List<Long> getUserTomadoIdList(User user) {
@@ -87,7 +88,7 @@ public class TomadoService {
         user.addToma(-tomado.getTomato());
         userRepository.save(user);
 
-        return ApiResponse.success(SuccessMessage.TOMADO_BUY_SUCCESS);
+        return ApiResponse.success(TOMADO_BUY_SUCCESS);
     }
 
     private void checkUserHaveTomado(User user, Tomado tomado) {
