@@ -20,10 +20,6 @@ public class ChangeRequest {
         this.character_url = character_url;
     }
 
-    public ChangeRequest from(User user) {
-        return new ChangeRequest(user.getLoginId(), user.getPassword(), user.getNickname(), user.getCharacterUrl());
-    }
-
     public void setPassword(String password) {
         this.password = password;
     }
