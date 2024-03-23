@@ -1,7 +1,6 @@
 package com.goormthon.tomado.domain.task.service;
 
 import com.goormthon.tomado.common.ApiResponse;
-import com.goormthon.tomado.common.exception.BadRequestException;
 import com.goormthon.tomado.common.exception.NotFoundException;
 import com.goormthon.tomado.domain.category.entity.Category;
 import com.goormthon.tomado.domain.category.repository.CategoryRepository;
@@ -85,6 +84,10 @@ public class TaskService {
         return ApiResponse.success(TOMA_SAVE_SUCCESS, new SaveTomaRequest.NewTaskId(task.getId()));
     }
 
+    public ApiResponse<SaveTomaRequest.NewTaskId> checkHardMode(SaveTomaRequest request, int toma) {
+        return saveToma(request, toma);
+    }
+
     public ApiResponse<TomaCountListResponse> getTomaCountByMonth(Long userId, int month) {
         List<Task> taskList = taskRepository.findByUserAndMonth(userId, month);
         List<TomaCount> tomaCountListResponseList = calculateTomaCounts(taskList);
@@ -105,9 +108,4 @@ public class TaskService {
                 .sorted(Comparator.comparing(TomaCount::getDate))
                 .collect(Collectors.toList());
     }
-
-    public ApiResponse<SaveTomaRequest.NewTaskId> checkHardMode(SaveTomaRequest request, int toma) {
-        return saveToma(request, toma);
-    }
-
 }
