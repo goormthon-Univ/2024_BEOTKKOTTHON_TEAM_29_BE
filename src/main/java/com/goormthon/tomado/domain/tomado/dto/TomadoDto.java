@@ -29,10 +29,12 @@ public class TomadoDto {
     @Getter
     @NoArgsConstructor
     public static class ResponseList {
-        private List<Response> tomadoList;
+        private List<Response> tomadoHaveList;
+        private List<Response> tomadoNotHaveList;
 
-        public ResponseList(List<Response> tomadoList) {
-            this.tomadoList = tomadoList;
+        public ResponseList(List<Response> tomadoHaveList, List<Response> tomadoNotHaveList) {
+            this.tomadoHaveList = tomadoHaveList;
+            this.tomadoNotHaveList = tomadoNotHaveList;
         }
     }
 

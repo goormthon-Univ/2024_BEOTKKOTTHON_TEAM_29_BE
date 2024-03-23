@@ -69,7 +69,7 @@ public class TomadoService {
             }
         }
 
-        return ApiResponse.success(SuccessMessage.TOMADO_FETCH_SUCCESS, new TomadoDto.ResponseList(tomadoNotHaveList));
+        return ApiResponse.success(SuccessMessage.TOMADO_FETCH_SUCCESS, new TomadoDto.ResponseList(tomadoHaveList, tomadoNotHaveList));
 
     }
 
