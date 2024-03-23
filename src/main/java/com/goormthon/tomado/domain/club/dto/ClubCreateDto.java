@@ -15,17 +15,15 @@ public class ClubCreateDto {
     public static class Request {
         private Long user_id;
         private String title;
-        private ColorType color;
         private int member_number;
         private int goal;
         private String memo;
         private LocalDate start_date;
         private LocalDate end_date;
 
-        private Request(Long user_id, String title, ColorType color, int member_number, int goal, String memo, LocalDate start_date, LocalDate end_date) {
+        private Request(Long user_id, String title, int member_number, int goal, String memo, LocalDate start_date, LocalDate end_date) {
             this.user_id = user_id;
             this.title = title;
-            this.color = color;
             this.member_number = member_number;
             this.goal = goal;
             this.memo = memo;
@@ -39,7 +37,6 @@ public class ClubCreateDto {
     public static class Response {
         private Long club_id;
         private String title;
-        private ColorType color;
         private int current_amount;
         private int member_number;
         private int goal;
@@ -47,10 +44,9 @@ public class ClubCreateDto {
         private LocalDate start_date;
         private LocalDate end_date;
 
-        private Response(Long club_id, String title, ColorType color, int current_amount, int member_number, int goal, String memo, LocalDate start_date, LocalDate end_date) {
+        private Response(Long club_id, String title, int current_amount, int member_number, int goal, String memo, LocalDate start_date, LocalDate end_date) {
             this.club_id = club_id;
             this.title = title;
-            this.color = color;
             this.current_amount = current_amount;
             this.member_number = member_number;
             this.goal = goal;
@@ -61,6 +57,6 @@ public class ClubCreateDto {
     }
 
     public static Response from(Club club) {
-        return new Response(club.getId(), club.getTitle(), club.getColor(), club.getCurrentAmount(), club.getMemberNumber(), club.getGoal(), club.getMemo(), club.getStartDate(), club.getEndDate());
+        return new Response(club.getId(), club.getTitle(), club.getCurrentAmount(), club.getMemberNumber(), club.getGoal(), club.getMemo(), club.getStartDate(), club.getEndDate());
     }
 }

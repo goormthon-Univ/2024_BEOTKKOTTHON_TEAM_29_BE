@@ -26,7 +26,7 @@ public class Club {
 
     @Column
     @Enumerated(value = EnumType.STRING)
-    private ColorType color;
+    private final ColorType color = ColorType.GRAY;
 
     @Column(nullable = false)
     private int memberNumber;
@@ -56,9 +56,8 @@ public class Club {
     @JsonManagedReference
     private final List<ClubMembers> clubMembersList = new ArrayList<>();
 
-    public Club(String title, ColorType color, int memberNumber, int goal, String memo, LocalDate startDate, LocalDate endDate) {
+    public Club(String title, int memberNumber, int goal, String memo, LocalDate startDate, LocalDate endDate) {
         this.title = title;
-        this.color = color;
         this.memberNumber = memberNumber;
         this.goal = goal;
         this.memo = memo;
@@ -68,10 +67,9 @@ public class Club {
 
     public Club update(ClubUpdateDto.Request request) {
         this.title = title.equals(request.getTitle()) || request.getTitle() == null ? title : request.getTitle();
-        this.color = color.equals(request.getColor()) || request.getColor() == null ? color : request.getColor();;
         this.memberNumber = request.getMember_number();
         this.goal = request.getGoal();
-        this.memo = memo.equals(request.getMemo()) || request.getMemo() == null ? title : request.getMemo();;
+        this.memo = memo.equals(request.getMemo()) || request.getMemo() == null ? memo : request.getMemo();
         this.endDate = request.getEnd_date();
 
         return this;

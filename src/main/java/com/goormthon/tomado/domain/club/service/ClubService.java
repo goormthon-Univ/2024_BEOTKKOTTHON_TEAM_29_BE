@@ -5,6 +5,7 @@ import com.goormthon.tomado.common.exception.BadRequestException;
 import com.goormthon.tomado.common.exception.NotFoundException;
 import com.goormthon.tomado.common.response.ErrorMessage;
 import com.goormthon.tomado.domain.category.entity.Category;
+import com.goormthon.tomado.domain.category.entity.ColorType;
 import com.goormthon.tomado.domain.category.repository.CategoryRepository;
 import com.goormthon.tomado.domain.club.dto.ClubCreateDto;
 import com.goormthon.tomado.domain.club.dto.ClubDto;
@@ -43,11 +44,11 @@ public class ClubService {
         User user = getUserByUserId(request.getUser_id());
 
         // Club 생성
-        Club club = new Club(request.getTitle(), request.getColor(), request.getMember_number(), request.getGoal(), request.getMemo(), request.getStart_date(), request.getEnd_date());
+        Club club = new Club(request.getTitle(), request.getMember_number(), request.getGoal(), request.getMemo(), request.getStart_date(), request.getEnd_date());
         clubRepository.save(club);
 
         // Category 생성
-        Category category = new Category(user, request.getTitle(), request.getColor());
+        Category category = new Category(user, request.getTitle(), ColorType.GRAY);
         categoryRepository.save(category.checkClub());
 
         // ClubMembers 생성
@@ -84,7 +85,7 @@ public class ClubService {
             List<ClubMembers> clubMembersList = clubUpdated.getClubMembersList();
             for (ClubMembers member : clubMembersList) {
                 Category category = member.getCategory();
-                categoryRepository.save(category.update(request.getTitle(), request.getColor()));
+                categoryRepository.save(category.update(request.getTitle(), ColorType.GRAY));
             }
             return ApiResponse.success(CLUB_UPDATE_SUCCESS, ClubCreateDto.from(clubUpdated));
         } else {
