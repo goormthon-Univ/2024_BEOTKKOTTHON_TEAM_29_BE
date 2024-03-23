@@ -1,6 +1,5 @@
 package com.goormthon.tomado.domain.club.dto;
 
-import com.goormthon.tomado.domain.category.entity.ColorType;
 import com.goormthon.tomado.domain.club.entity.Club;
 import com.goormthon.tomado.domain.user.entity.User;
 import lombok.Getter;
