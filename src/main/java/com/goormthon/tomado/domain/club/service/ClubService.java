@@ -20,6 +20,7 @@ import com.goormthon.tomado.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -200,6 +201,13 @@ public class ClubService {
                 .collect(Collectors.toList());
 
         return ApiResponse.success(CLUB_LIST_FETCH_SUCCESS, new ClubGetDto.ResponseList(responseList));
+    }
+
+    public ApiResponse saveClubInviteLink(ClubDto.SaveLink request) {
+        Club club = getClubByClubId(request.getClub_id());
+        clubRepository.save(club.saveUrl(request.getUrl()));
+
+        return ApiResponse.success(CLUB_URL_SAVE_SUCCESS);
     }
 
     private User getUserByUserId(Long userId) {

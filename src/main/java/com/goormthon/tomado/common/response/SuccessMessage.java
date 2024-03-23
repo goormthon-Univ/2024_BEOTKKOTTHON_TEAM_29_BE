@@ -41,7 +41,8 @@ public enum SuccessMessage {
     CLUB_UPDATE_SUCCESS(OK, "클럽 수정 성공"),
     CLUB_LIST_FETCH_SUCCESS(OK, "토마 클럽 리스트 조회 성공"),
     CLUB_DELETE_SUCCESS(OK, "클럽 삭제 성공"),
-    CLUB_COMPLETED(OK, "클럽 목표 달성")
+    CLUB_COMPLETED(OK, "클럽 목표 달성"),
+    CLUB_URL_SAVE_SUCCESS(OK, "클럽 초대 링크 저장 성공")
     ;
 
     private final HttpStatus httpStatus;

@@ -49,4 +49,10 @@ public class ClubController {
     public ApiResponse joinClub(@RequestBody ClubDto.Join request) {
         return clubService.joinClub(request);
     }
+
+    @Operation(summary = "클럽 초대링크 저장")
+    @PutMapping("/invite")
+    public ApiResponse saveClubInviteLink(@RequestBody ClubDto.SaveLink request) {
+        return clubService.saveClubInviteLink(request);
+    }
 }
