@@ -25,7 +25,7 @@ public class TaskController {
     }
 
     @PostMapping("/toma")
-    public ApiResponse saveToma(@RequestBody SaveTomaRequest request) {
+    public ApiResponse<SaveTomaRequest.NewTaskId> saveToma(@RequestBody SaveTomaRequest request) {
         return taskService.saveToma(request, TOMA);
     }
 
@@ -35,7 +35,7 @@ public class TaskController {
     }
 
     @PostMapping("/hard")
-    public ApiResponse checkHardMode(SaveTomaRequest request) {
+    public ApiResponse<SaveTomaRequest.NewTaskId> checkHardMode(@RequestBody SaveTomaRequest request) {
         return taskService.checkHardMode(request, HARD);
     }
 
