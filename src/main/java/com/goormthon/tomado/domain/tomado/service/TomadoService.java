@@ -97,8 +97,8 @@ public class TomadoService {
         }
     }
 
-    private void checkUserHaveEnoughToma(boolean user, ErrorMessage userTomatoNotEnough) {
-        if (user) {
+    private void checkUserHaveEnoughToma(boolean isEnough, ErrorMessage userTomatoNotEnough) {
+        if (isEnough) {
             throw new BadRequestException(userTomatoNotEnough);
         }
     }
