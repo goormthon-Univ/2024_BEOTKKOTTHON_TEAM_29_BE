@@ -149,8 +149,7 @@ public class ClubService {
     public ApiResponse joinClub(ClubDto.Join request) {
         // 회원 & 클럽 확인
         User user = getUserByUserId(request.getUser_id());
-        Club club = clubRepository.findById(request.getClub_id())
-                .orElseThrow(() -> new NotFoundException(ErrorMessage.CLUB_NOT_EXIST));
+        Club club = getClubByClubId(request.getClub_id());
 
         // 이미 가입한 클럽인지 확인
         for (ClubMembers clubMembers : user.getClubList()) {
