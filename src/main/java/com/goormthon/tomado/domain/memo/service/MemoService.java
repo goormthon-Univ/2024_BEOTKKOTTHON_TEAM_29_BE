@@ -36,15 +36,8 @@ public class MemoService {
 
     public ApiResponse delete(Long userId, Long memoId) {
         User user = getUser(userId);
-
-        boolean existMemo = false;
-        for (Memo memo : user.getMemoList()) {
-            if (memo.getId().equals(memoId)) {
-                existMemo = true;
-                break;
-            }
-        }
-        
+        boolean existMemo = user.getMemoList().stream()
+                .anyMatch(memo -> memo.getId().equals(memoId));
 
         if (existMemo) {
             memoRepository.delete(getMemo(memoId));
