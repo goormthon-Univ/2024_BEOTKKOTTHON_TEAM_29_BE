@@ -25,12 +25,11 @@ import static com.goormthon.tomado.common.response.ErrorMessage.*;
 @Transactional
 public class TomadoService {
 
+    // 토마두 캐릭터 개수
+    private static final Long TOMADO_COUNT = 9L;
     private final TomadoRepository tomadoRepository;
     private final UserTomadoRepository userTomadoRepository;
     private final UserRepository userRepository;
-
-    // 토마두 캐릭터 개수
-    private static final Long TOMADO_COUNT = 9L;
 
     @Transactional(readOnly = true)
     public ApiResponse<TomadoDto.Response> getTomadoInfo(Long tomadoId) {
