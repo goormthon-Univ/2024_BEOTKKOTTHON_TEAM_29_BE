@@ -55,16 +55,11 @@ public class TaskService {
         return ApiResponse.success(TASK_SAVE_SUCCESS, TaskCreateDto.from(task));
     }
 
-    public ApiResponse saveToma(SaveTomaRequest request) {
+    public ApiResponse saveToma(SaveTomaRequest request, int toma) {
         Task task = taskRepository.findByIdAndUserId(request.getTask_id(), request.getUser_id())
                 .orElseThrow(() -> new NotFoundException(TASK_NOT_EXIST));
         Category category = task.getCategory();
         User user = task.getUser();
-
-        if (request.getMode() != 0 && request.getMode() != 1) {
-            throw new BadRequestException(TASK_MODE_INVALID);
-        }
-        int toma = request.getMode() == 0 ? 1 : 3;
 
         if (!request.getCreated_at().toLocalDate().isEqual(task.getCreatedAt().toLocalDate())) {
             task = new Task(user, task.getTitle(), category);
@@ -109,6 +104,10 @@ public class TaskService {
                 .map(entry -> new TomaCount(entry.getKey(), entry.getValue()))
                 .sorted(Comparator.comparing(TomaCount::getDate))
                 .collect(Collectors.toList());
+    }
+
+    public ApiResponse checkHardMode(SaveTomaRequest request, int toma) {
+        return saveToma(request, toma);
     }
 
 }

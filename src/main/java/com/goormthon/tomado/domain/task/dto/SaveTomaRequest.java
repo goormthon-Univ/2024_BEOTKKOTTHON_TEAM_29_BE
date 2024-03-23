@@ -12,13 +12,11 @@ public class SaveTomaRequest {
 
     private Long user_id;
     private Long task_id;
-    private int mode; // 0: EASY, 1: HARD
     private LocalDateTime created_at;
 
-    public SaveTomaRequest(Long user_id, Long task_id, int mode, LocalDateTime created_at) {
+    public SaveTomaRequest(Long user_id, Long task_id, LocalDateTime created_at) {
         this.user_id = user_id;
         this.task_id = task_id;
-        this.mode = mode;
         this.created_at = created_at;
     }
 }
