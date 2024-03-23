@@ -30,7 +30,7 @@ public class TomadoService {
     private final UserRepository userRepository;
 
     // 토마두 캐릭터 개수
-    private final Long TOMADO_COUNT = 4L;
+    private final Long TOMADO_COUNT = 9L;
 
     @Transactional(readOnly = true)
     public ApiResponse<TomadoDto.Response> findById(Long tomadoId) {
