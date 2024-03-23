@@ -43,11 +43,7 @@ public class TomadoService {
         User user = getUser(userId);
 
         // 사용자가 보유한 토마두 리스트 -> tomadoIdList : id 값만 따로 빼서 저장
-        List<UserTomado> userTomadoList = user.getUserTomadoList();
-        List<Long> tomadoIdList = new ArrayList<Long>();
-        for (UserTomado userTomado : userTomadoList) {
-            tomadoIdList.add(userTomado.getTomado().getId());
-        }
+        List<Long> tomadoIdList = getUserTomadoIdList(user);
 
         // 사용자가 보유한 토마두 캐릭터 id를 담을 리스트 : tomadoHaveList
         // 사용자가 보유하지 않은 토마두 캐릭터 id를 탐을 리스트 : tomadoNotHaveList
@@ -67,6 +63,14 @@ public class TomadoService {
         return ApiResponse.success(SuccessMessage.TOMADO_FETCH_SUCCESS, new TomadoDto.ResponseList(tomadoHaveList, tomadoNotHaveList));
     }
 
+    private List<Long> getUserTomadoIdList(User user) {
+        List<Long> tomadoIdList = new ArrayList<Long>();
+        for (UserTomado userTomado : user.getUserTomadoList()) {
+            tomadoIdList.add(userTomado.getTomado().getId());
+        }
+        return tomadoIdList;
+    }
+
     public ApiResponse buyTomado(Long userId, Long tomadoId) {
         // 회원 정보 - 보유 토마량 확인
         User user = getUser(userId);
@@ -75,21 +79,27 @@ public class TomadoService {
         Tomado tomado = getTomado(tomadoId);
 
         // 구매한 토마두인지 확인
-        for (UserTomado userTomado : user.getUserTomadoList()) {
-            if (userTomado.getTomado().getId().equals(tomado.getId())) {
-                throw new BadRequestException(USER_TOMADO_ALREADY_EXIST);
-            }
-        }
+        checkUserHaveTomado(user, tomado);
+        // 회원이 충분한 토마를 보유했는지 확인
+        checkUserHaveEnoughToma(user.getTomato() < tomado.getTomato(), USER_TOMATO_NOT_ENOUGH);
 
-        if (user.getTomato() >= tomado.getTomato()) {
-            userTomadoRepository.save(new UserTomado(user, tomado));
-            user.addToma(-tomado.getTomato());
-            userRepository.save(user);
-        } else {
-            throw new BadRequestException(USER_TOMATO_NOT_ENOUGH);
-        }
+        userTomadoRepository.save(new UserTomado(user, tomado));
+        user.addToma(-tomado.getTomato());
+        userRepository.save(user);
 
         return ApiResponse.success(SuccessMessage.TOMADO_BUY_SUCCESS);
+    }
+
+    private void checkUserHaveTomado(User user, Tomado tomado) {
+        for (UserTomado userTomado : user.getUserTomadoList()) {
+            checkUserHaveEnoughToma(userTomado.getTomado().getId().equals(tomado.getId()), USER_TOMADO_ALREADY_EXIST);
+        }
+    }
+
+    private void checkUserHaveEnoughToma(boolean user, ErrorMessage userTomatoNotEnough) {
+        if (user) {
+            throw new BadRequestException(userTomatoNotEnough);
+        }
     }
 
     private Tomado getTomado(Long tomadoId) {
