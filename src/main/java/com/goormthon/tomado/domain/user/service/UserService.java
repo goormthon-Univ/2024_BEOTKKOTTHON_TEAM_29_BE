@@ -58,7 +58,7 @@ public class UserService {
         return ApiResponse.success(LOGIN_ID_VALIDATE_SUCCESS, userRepository.findByLoginId(loginId).isPresent());
     }
 
-    public ApiResponse<SimpleResponse> login(LoginRequest request) {
+    public ApiResponse<Response.Simple> login(LoginDto.Request request) {
 
         User user = userRepository.findByLoginId(request.getLogin_id())
                 .orElseThrow(() -> new NotFoundException(USER_LOGIN_ID_NOT_EXIST));

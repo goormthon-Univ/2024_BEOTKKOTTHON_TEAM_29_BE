@@ -25,14 +25,14 @@ public class UserController {
     }
 
     @PostMapping("/users/signup/exists")
-    public ApiResponse<Boolean> validateLoginId(@RequestBody LoginIdCheckDto loginIdCheckDto) {
+    public ApiResponse<Boolean> validateLoginId(@RequestBody LoginDto.Check loginIdCheckDto) {
         return userService.validateLoginId(loginIdCheckDto.getLogin_id());
     }
 
     @Operation(summary = "로그인")
     @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "login_id : 아이디 / password : 비밀번호", required = true)
     @PostMapping("users/login")
-    public ApiResponse<SimpleResponse> login(@RequestBody LoginRequest request) {
+    public ApiResponse<Response.Simple> login(@RequestBody LoginDto.Request request) {
         return userService.login(request);
     }
 
