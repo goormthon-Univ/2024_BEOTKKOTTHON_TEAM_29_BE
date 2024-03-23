@@ -106,4 +106,8 @@ public class TaskService {
                 .collect(Collectors.toList());
     }
 
+    public ApiResponse checkHardMode(SaveTomaRequest request, int toma) {
+        return saveToma(request, toma);
+    }
+
 }
