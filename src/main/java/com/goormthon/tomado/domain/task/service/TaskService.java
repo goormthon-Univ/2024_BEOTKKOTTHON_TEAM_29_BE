@@ -55,7 +55,7 @@ public class TaskService {
         return ApiResponse.success(TASK_SAVE_SUCCESS, TaskCreateDto.from(task));
     }
 
-    public ApiResponse saveToma(SaveTomaRequest request, int toma) {
+    public ApiResponse<SaveTomaRequest.NewTaskId> saveToma(SaveTomaRequest request, int toma) {
         Task task = taskRepository.findByIdAndUserId(request.getTask_id(), request.getUser_id())
                 .orElseThrow(() -> new NotFoundException(TASK_NOT_EXIST));
         Category category = task.getCategory();
@@ -82,7 +82,7 @@ public class TaskService {
             }
         }
 
-        return ApiResponse.success(TOMA_SAVE_SUCCESS);
+        return ApiResponse.success(TOMA_SAVE_SUCCESS, new SaveTomaRequest.NewTaskId(task.getId()));
     }
 
     public ApiResponse<TomaCountListResponse> getTomaCountByMonth(Long userId, int month) {
@@ -106,7 +106,7 @@ public class TaskService {
                 .collect(Collectors.toList());
     }
 
-    public ApiResponse checkHardMode(SaveTomaRequest request, int toma) {
+    public ApiResponse<SaveTomaRequest.NewTaskId> checkHardMode(SaveTomaRequest request, int toma) {
         return saveToma(request, toma);
     }
 

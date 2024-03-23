@@ -19,4 +19,14 @@ public class SaveTomaRequest {
         this.task_id = task_id;
         this.created_at = created_at;
     }
+
+    @Getter
+    @NoArgsConstructor
+    public static class NewTaskId {
+        private Long task_id;
+
+        public NewTaskId(Long task_id) {
+            this.task_id = task_id;
+        }
+    }
 }
