@@ -25,25 +25,20 @@ public class MemoService {
 
     @Transactional(readOnly = true)
     public ApiResponse<MemoDto.ResponseList> getMemoList(Long userId) {
-
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException(USER_NOT_EXIST));
         return ApiResponse.success(SuccessMessage.MEMO_LIST_FETCH_SUCCESS, MemoDto.from(user.getMemoList()));
-
     }
 
     public ApiResponse write(Long userId, MemoDto.Write write) {
-
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException(USER_NOT_EXIST));
 
         memoRepository.save(new Memo(user, write.getContent()));
         return ApiResponse.success(SuccessMessage.MEMO_CREATE_SUCCESS);
-
     }
 
     public ApiResponse delete(Long userId, Long memoId) {
-
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException(USER_NOT_EXIST));
 
@@ -64,7 +59,6 @@ public class MemoService {
         }
 
         return ApiResponse.success(SuccessMessage.MEMO_DELETE_SUCCESS);
-
     }
 
 }

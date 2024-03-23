@@ -7,8 +7,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 @RequestMapping("/memos")
 @RequiredArgsConstructor
@@ -29,7 +27,7 @@ public class MemoController {
     }
 
     @Operation(summary = "메모 삭제")
-    @DeleteMapping("")
+    @DeleteMapping
     public ApiResponse delete(@RequestParam(name = "userId") Long userId, @RequestParam("memoId") Long memoId) {
         return memoService.delete(userId, memoId);
     }
