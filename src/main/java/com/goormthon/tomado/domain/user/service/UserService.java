@@ -50,7 +50,7 @@ public class UserService {
         } catch (DataIntegrityViolationException exception) {
             throw new BadRequestException(USER_LOGIN_ID_VALIDATE);
         }
-        return ApiResponse.success(USER_SIGNUP_SUCCESS, new SimpleResponse(user.getId()));
+        return ApiResponse.success(USER_SIGNUP_SUCCESS, Response.Simple.from(user.getId()));
 
     }
 
@@ -64,13 +64,13 @@ public class UserService {
                 .orElseThrow(() -> new NotFoundException(USER_LOGIN_ID_NOT_EXIST));
 
         if (passwordEncoder.matches(request.getPassword(), user.getPassword())) {
-            return ApiResponse.success(USER_LOGIN_SUCCESS, new SimpleResponse(user.getId()));
+            return ApiResponse.success(USER_LOGIN_SUCCESS, Response.Simple.from(user.getId()));
         } else {
             throw new NotFoundException(USER_PASSWORD_NOT_EXIST);
         }
     }
 
-    public ApiResponse<SimpleResponse> change(Long user_id, ChangeRequest request) {
+    public ApiResponse<Response.Simple> change(Long user_id, ChangeRequest request) {
 
         User user = userRepository.findById(user_id)
                 .orElseThrow(() -> new NotFoundException(USER_NOT_EXIST));
@@ -83,7 +83,7 @@ public class UserService {
 
         try {
             User userChanged = userRepository.save(user.change(request));
-            return ApiResponse.success(USER_INFO_CHANGE_SUCCESS, new SimpleResponse(userChanged.getId()));
+            return ApiResponse.success(USER_INFO_CHANGE_SUCCESS, Response.Simple.from(userChanged.getId()));
         } catch (DataIntegrityViolationException exception) {
             throw new BadRequestException(USER_LOGIN_ID_VALIDATE);
         }
@@ -91,10 +91,10 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
-    public ApiResponse<Response> findById(Long userId) {
+    public ApiResponse<Response.Detailed> findById(Long userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException(USER_NOT_EXIST));
-        return ApiResponse.success(USER_INFO_FIND_SUCCESS, Response.from(user));
+        return ApiResponse.success(USER_INFO_FIND_SUCCESS, Response.Detailed.from(user));
     }
 
     public ApiResponse withdraw(Long userId) {

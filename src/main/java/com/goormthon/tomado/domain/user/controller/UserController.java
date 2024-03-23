@@ -1,8 +1,6 @@
 package com.goormthon.tomado.domain.user.controller;
 
 import com.goormthon.tomado.common.ApiResponse;
-import com.goormthon.tomado.common.exception.NotFoundException;
-import com.goormthon.tomado.common.response.ErrorMessage;
 import com.goormthon.tomado.domain.user.dto.*;
 import com.goormthon.tomado.domain.user.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -39,13 +37,13 @@ public class UserController {
     @Operation(summary = "회원 정보 수정")
     @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "login_id : 아이디 / password : 비밀번호 / nickname : 별명 / character_url : 캐릭터 이미지 주소")
     @PutMapping("users/{user_id}")
-    public ApiResponse<SimpleResponse> change(@PathVariable Long user_id, @RequestBody ChangeRequest request) {
+    public ApiResponse<Response.Simple> change(@PathVariable Long user_id, @RequestBody ChangeRequest request) {
         return userService.change(user_id, request);
     }
 
     @Operation(summary = "회원 정보 조회")
     @GetMapping("users/{user_id}")
-    public ApiResponse<Response> findById(@PathVariable Long user_id) {
+    public ApiResponse<Response.Detailed> findById(@PathVariable Long user_id) {
         return userService.findById(user_id);
     }
 
