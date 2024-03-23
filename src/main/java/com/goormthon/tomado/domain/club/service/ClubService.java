@@ -51,14 +51,7 @@ public class ClubService {
         categoryRepository.save(category.checkClub());
 
         // ClubMembers 생성
-        ClubMembersId clubMembersId = new ClubMembersId(club.getId(), user.getId());
-        ClubMembers clubMembers = new ClubMembers(clubMembersId, club, user, category);
-        clubMembersRepository.save(clubMembers);
-
-        user.getClubList().add(clubMembers);
-        club.getClubMembersList().add(clubMembers);
-        userRepository.save(user);
-        clubRepository.save(club);
+        createClubMembers(user, club, category);
 
         return ApiResponse.success(CLUB_CREATE_SUCCESS, ClubCreateDto.from(club));
     }
@@ -81,11 +74,8 @@ public class ClubService {
             // 클럽 수정
             Club clubUpdated = clubRepository.save(club.update(request));
             // ClubMembers -> Category 찾아 수정
-            List<ClubMembers> clubMembersList = clubUpdated.getClubMembersList();
-            for (ClubMembers member : clubMembersList) {
-                Category category = member.getCategory();
-                categoryRepository.save(category.update(request.getTitle(), ColorType.GRAY));
-            }
+            updateClubCategory(request, clubUpdated);
+
             return ApiResponse.success(CLUB_UPDATE_SUCCESS, ClubCreateDto.from(clubUpdated));
         } else {
             throw new BadRequestException(USER_NOT_CLUB_MEMBER);
@@ -104,7 +94,6 @@ public class ClubService {
                 deleteAll(clubMembersList, club);
             } else {
                 // ClubMembers만 삭제 (Club, Category 그대로)
-
                 ClubMembers memberToDelete = findMemberToDelete(clubMembersList, user);
 
                 // 카테고리의 tomato가 0이면 삭제
@@ -180,15 +169,7 @@ public class ClubService {
         categoryRepository.save(category.checkClub());
 
         // clubMembers 생성
-        ClubMembersId clubMembersId = new ClubMembersId(club.getId(), user.getId());
-        ClubMembers clubMembers = new ClubMembers(clubMembersId, club, user, category);
-        clubMembersRepository.save(clubMembers);
-
-        user.getClubList().add(clubMembers);
-        club.getClubMembersList().add(clubMembers);
-
-        userRepository.save(user);
-        clubRepository.save(club);
+        createClubMembers(user, club, category);
 
         return ApiResponse.success(CLUB_JOIN_SUCCESS);
     }
@@ -222,9 +203,28 @@ public class ClubService {
         return club;
     }
 
+    private void createClubMembers(User user, Club club, Category category) {
+        ClubMembersId clubMembersId = new ClubMembersId(club.getId(), user.getId());
+        ClubMembers clubMembers = new ClubMembers(clubMembersId, club, user, category);
+        clubMembersRepository.save(clubMembers);
+
+        user.getClubList().add(clubMembers);
+        club.getClubMembersList().add(clubMembers);
+        userRepository.save(user);
+        clubRepository.save(club);
+    }
+
     private boolean isClubMember(Club club, User user) {
         return club.getClubMembersList().stream()
                 .anyMatch(clubMembers -> clubMembers.getUser().equals(user));
+    }
+
+    private void updateClubCategory(ClubUpdateDto.Request request, Club clubUpdated) {
+        List<ClubMembers> clubMembersList = clubUpdated.getClubMembersList();
+        for (ClubMembers member : clubMembersList) {
+            Category category = member.getCategory();
+            categoryRepository.save(category.update(request.getTitle(), ColorType.GRAY));
+        }
     }
 
     private void deleteAll(List<ClubMembers> clubMembersList, Club club) {
