@@ -16,13 +16,6 @@ public class TaskCreateDto {
         private Long category_id;
         private String title;
         private LocalDateTime created_at;
-
-        private Request(Long user_id, Long category_id, String title, LocalDateTime created_at) {
-            this.user_id = user_id;
-            this.category_id = category_id;
-            this.title = title;
-            this.created_at = created_at;
-        }
     }
 
     @Getter
