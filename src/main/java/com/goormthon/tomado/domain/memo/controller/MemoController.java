@@ -28,7 +28,7 @@ public class MemoController {
 
     @Operation(summary = "메모 삭제")
     @DeleteMapping
-    public ApiResponse delete(@RequestParam(name = "userId") Long userId, @RequestParam("memoId") Long memoId) {
+    public ApiResponse delete(@RequestParam(name = "user") Long userId, @RequestParam("memo") Long memoId) {
         return memoService.delete(userId, memoId);
     }
 
