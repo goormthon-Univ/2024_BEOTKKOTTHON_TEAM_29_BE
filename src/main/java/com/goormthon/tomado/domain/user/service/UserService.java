@@ -27,6 +27,7 @@ import static com.goormthon.tomado.common.response.SuccessMessage.*;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class UserService {
 
     final private UserRepository userRepository;
@@ -34,7 +35,6 @@ public class UserService {
     final private TomadoRepository tomadoRepository;
     final private UserTomadoRepository userTomadoRepository;
 
-    @Transactional
     public ApiResponse<SimpleResponse> signUp(SignUpRequest request) {
 
         User user = new User(request.getLogin_id(), passwordEncoder.encode(request.getPassword()), request.getNickname());
@@ -58,7 +58,6 @@ public class UserService {
         return ApiResponse.success(LOGIN_ID_VALIDATE_SUCCESS, userRepository.findByLoginId(loginId).isPresent());
     }
 
-    @Transactional
     public ApiResponse<SimpleResponse> login(LoginRequest request) {
 
         User user = userRepository.findByLoginId(request.getLogin_id())
@@ -71,7 +70,6 @@ public class UserService {
         }
     }
 
-    @Transactional
     public ApiResponse<SimpleResponse> change(Long user_id, ChangeRequest request) {
 
         User user = userRepository.findById(user_id)
@@ -99,13 +97,13 @@ public class UserService {
         return ApiResponse.success(USER_INFO_FIND_SUCCESS, Response.from(user));
     }
 
-    @Transactional
     public ApiResponse withdraw(Long userId) {
         User user = userRepository.findById(userId).orElseThrow(() -> new NotFoundException(USER_NOT_EXIST));
         userRepository.delete(user);
         return ApiResponse.success(USER_WITHDRAW_SUCCESS);
     }
 
+    @Transactional(readOnly = true)
     public ApiResponse<List<BookResponse.Simple>> getBook(Long userId) {
         // 회원 정보 확인
         User user = userRepository.findById(userId)
@@ -120,6 +118,7 @@ public class UserService {
         return ApiResponse.success(BOOK_FETCH_SUCCESS, simpleResponseList);
     }
 
+    @Transactional(readOnly = true)
     public ApiResponse<BookResponse.Detailed> getTomadoInfoOfBook(Long userId, Long tomadoId) {
         // 회원 정보 확인
         User user = userRepository.findById(userId)
