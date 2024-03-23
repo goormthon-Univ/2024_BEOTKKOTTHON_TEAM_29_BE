@@ -35,21 +35,27 @@ public class UserService {
     public ApiResponse<Response.Simple> signUp(SignUpDto.Request request) {
 
         User user = new User(request.getLogin_id(), passwordEncoder.encode(request.getPassword()), request.getNickname());
-        try {
-            User userRegistered = userRepository.save(user);
-
-            // 기본 토마두 지급
-            UserTomado userTomado = userTomadoRepository.save(new UserTomado(userRegistered, tomadoRepository.findById(1L)
-                    .orElseThrow(() -> new NotFoundException(TOMADO_NOT_EXIST))));
-            userRegistered.getUserTomadoList().add(userTomado);
-            userRepository.save(userRegistered);
-
-        } catch (DataIntegrityViolationException exception) {
-            throw new BadRequestException(USER_LOGIN_ID_VALIDATE);
-        }
+        User userRegistered = validateLoginInfo(user);
+        giveDefaultTomado(userRegistered);
         return ApiResponse.success(USER_SIGNUP_SUCCESS, Response.Simple.from(user.getId()));
 
     }
+
+    private User validateLoginInfo(User user) {
+        try {
+            return userRepository.save(user);
+        } catch (DataIntegrityViolationException exception) {
+            throw new BadRequestException(USER_LOGIN_ID_VALIDATE);
+        }
+    }
+
+    private void giveDefaultTomado(User user) {
+        // 기본 토마두 지급
+        UserTomado userTomado = userTomadoRepository.save(new UserTomado(user, getTomado(1L)));
+        user.getUserTomadoList().add(userTomado);
+        userRepository.save(user);
+    }
+
 
     public ApiResponse<Boolean> validateLoginId(String loginId) {
         return ApiResponse.success(LOGIN_ID_VALIDATE_SUCCESS, userRepository.findByLoginId(loginId).isPresent());
@@ -57,8 +63,7 @@ public class UserService {
 
     public ApiResponse<Response.Simple> login(LoginDto.Request request) {
 
-        User user = userRepository.findByLoginId(request.getLogin_id())
-                .orElseThrow(() -> new NotFoundException(USER_LOGIN_ID_NOT_EXIST));
+        User user = userRepository.findByLoginId(request.getLogin_id()).orElseThrow(() -> new NotFoundException(USER_LOGIN_ID_NOT_EXIST));
 
         if (passwordEncoder.matches(request.getPassword(), user.getPassword())) {
             return ApiResponse.success(USER_LOGIN_SUCCESS, Response.Simple.from(user.getId()));
@@ -118,7 +123,7 @@ public class UserService {
         User user = getUser(userId);
 
         // 토마두 정보 확인
-        Tomado tomado = tomadoRepository.findById(tomadoId).orElseThrow(() -> new NotFoundException(TOMADO_NOT_EXIST));
+        Tomado tomado = getTomado(tomadoId);
 
         // 유저가 보유한 토마두 정보인지 확인
         UserTomado userTomado = userTomadoRepository.findByUserIdAndTomadoId(user.getId(), tomado.getId())
@@ -130,6 +135,10 @@ public class UserService {
     private User getUser(Long userId) {
         User user = userRepository.findById(userId).orElseThrow(() -> new NotFoundException(USER_NOT_EXIST));
         return user;
+    }
+
+    private Tomado getTomado(long id) {
+        return tomadoRepository.findById(id).orElseThrow(() -> new NotFoundException(TOMADO_NOT_EXIST));
     }
 
 }
