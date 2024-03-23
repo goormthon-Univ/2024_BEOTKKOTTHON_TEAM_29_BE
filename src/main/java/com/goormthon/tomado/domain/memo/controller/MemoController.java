@@ -18,20 +18,20 @@ public class MemoController {
 
     @Operation(summary = "메모 리스트 조회")
     @GetMapping("/{user_id}")
-    public ApiResponse<MemoDto.ResponseList> getMemoList(@PathVariable Long user_id) {
-        return memoService.getMemoList(user_id);
+    public ApiResponse<MemoDto.ResponseList> getMemoList(@PathVariable(name = "user_id") Long userId) {
+        return memoService.getMemoList(userId);
     }
 
     @Operation(summary = "메모 작성")
     @PostMapping("/{user_id}")
-    public ApiResponse write(@PathVariable Long user_id, @RequestBody MemoDto.Write write) {
-        return memoService.write(user_id, write);
+    public ApiResponse write(@PathVariable(name = "user_id") Long userId, @RequestBody MemoDto.Write write) {
+        return memoService.write(userId, write);
     }
 
     @Operation(summary = "메모 삭제")
     @DeleteMapping("")
-    public ApiResponse delete(@RequestParam(name = "user") Long user_id, @RequestParam("memo") Long memo_id) {
-        return memoService.delete(user_id, memo_id);
+    public ApiResponse delete(@RequestParam(name = "userId") Long userId, @RequestParam("memoId") Long memoId) {
+        return memoService.delete(userId, memoId);
     }
 
 }
