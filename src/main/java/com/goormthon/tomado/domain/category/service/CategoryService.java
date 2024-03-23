@@ -59,7 +59,7 @@ public class CategoryService {
         Map<Category, Integer> categoryMap = getCategoryTomaMap(taskList);
         List<SimpleResponse> simpleResponseList = getSimpleResponseList(categoryMap);
 
-        return ApiResponse.success(CATEGORY_LIST_FETCH_SUCCESS, CategoryListByDateDto.fromCategoriesByDate(simpleResponseList));
+        return ApiResponse.success(CATEGORY_LIST_FETCH_SUCCESS, CategoryListByDateDto.from(simpleResponseList));
     }
 
     public ApiResponse<SimpleResponse> updateCategory(Long category_id, CategoryUpdateDto.Request request) {
